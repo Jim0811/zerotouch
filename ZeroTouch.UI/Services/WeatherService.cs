@@ -17,10 +17,10 @@ namespace ZeroTouch.UI.Services
             try
             {
                 DotNetEnv.Env.Load();
-                var apiKey = Environment.GetEnvironmentVariable("CWB_API_KEY");
+                var apiKey = Environment.GetEnvironmentVariable("CWA_API_KEY");
 
                 if (string.IsNullOrWhiteSpace(apiKey))
-                    throw new InvalidOperationException("Missing CWB_API_KEY in .env file.");
+                    throw new InvalidOperationException("Missing CWA_API_KEY in .env file.");
 
                 url = $"https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001" + 
                       $"?Authorization={apiKey}&format=JSON&locationName={location}";
