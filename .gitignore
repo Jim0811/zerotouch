@@ -55,3 +55,6 @@ nunit-*.xml
 
 # IDE
 .vs/
+
+# Environment variables and API keys
+.env
