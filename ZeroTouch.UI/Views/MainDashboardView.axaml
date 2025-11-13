@@ -145,42 +145,37 @@
                             Background="#202020"
                             Margin="12"
                             Padding="18">
-                        <Grid>
+
+                        <Grid RowDefinitions="Auto,Auto">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <!-- Left Panel -->
-                            <StackPanel Grid.Column="0"
-                                        VerticalAlignment="Center"
+                            <!-- Main Top Content -->
+                            <StackPanel Grid.Row="0"
+                                        Grid.Column="0"
+                                        VerticalAlignment="Top"
                                         Spacing="8">
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="10"
-                                            VerticalAlignment="Center">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Location}"
-                                                   FontWeight="Bold"
-                                                   FontSize="22"
-                                                   Foreground="#FFFFFF"/>
-                                    </StackPanel>
 
-                                    <!-- GIF -->
-                                    <gif:GifImage Source="{Binding WeatherIconPath}"
-                                                  Width="80"
-                                                  Height="80"
-                                                  VerticalAlignment="Center"
-                                                  Margin="10,0,0,0"/>
-                                </StackPanel>
+                                <!-- Location -->
+                                <TextBlock Text="{Binding Location}"
+                                           FontWeight="Bold"
+                                           FontSize="22"
+                                           Foreground="#FFFFFF"/>
 
                                 <!-- Weather Condition -->
                                 <TextBlock Text="{Binding WeatherCondition}"
                                            FontSize="18"
                                            Foreground="#DDDDDD"
-                                           Margin="0,6,0,0"/>
+                                           Margin="0,10,0,0"/>
 
                                 <!-- Temperature colored bar -->
-                                <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,4,0,0" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6"
+                                            Margin="0,4,0,8"
+                                            VerticalAlignment="Center">
+
                                     <TextBlock Text="{Binding MinTemperature}"
                                                FontSize="14"
                                                Foreground="#AAAAAA"
@@ -196,35 +191,59 @@
                                                Foreground="#AAAAAA"
                                                VerticalAlignment="Center"/>
                                 </StackPanel>
-
-                                <!-- Info bar -->
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="20"
-                                            Margin="0,10,0,0">
-                                    
-                                    <!-- Probability of precipitation -->
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <Path Data="M10,2 C14,5 14,9 10,12 C6,9 6,5 10,2 Z"
-                                              Fill="#66CCFF"
-                                              Width="12" Height="12" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding Pop, StringFormat={}{0}}"
-                                                   FontSize="14"
-                                                   Foreground="#AAAAAA"
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-
-                                    <!-- Comfortability -->
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <Path Data="M8 0 L16 16 L0 16 Z"
-                                              Fill="#FFD54F"
-                                              Width="12" Height="12" VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding Comfort}"
-                                                   FontSize="14"
-                                                   Foreground="#AAAAAA"
-                                                   VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </StackPanel>
                             </StackPanel>
+
+                            <!-- GIF -->
+                            <gif:GifImage Grid.Row="0"
+                                          Grid.Column="1"
+                                          HorizontalAlignment="Right"
+                                          VerticalAlignment="Top"
+                                          Source="{Binding WeatherIconPath}"
+                                          Width="90"
+                                          Height="90"/>
+
+                            <!-- Info Bar -->
+                            <Grid Grid.Row="1"
+                                  Grid.ColumnSpan="2"
+                                  Margin="0,16,0,0"
+                                  ColumnDefinitions="*,*">
+
+                                <!-- Precipitation -->
+                                <StackPanel Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Left"
+                                            Spacing="6">
+                                    <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/precipitation.png"
+                                           Width="30"
+                                           Height="30"
+                                           VerticalAlignment="Center"/>
+
+                                    <TextBlock Text="{Binding Pop}"
+                                               FontSize="16"
+                                               FontWeight="Medium"
+                                               Foreground="#CCCCCC"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <!-- Comfortability -->
+                                <StackPanel Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            Spacing="6"
+                                            Margin="0,0,15,0">
+                                    
+                                    <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/leaf.png"
+                                           Width="25"
+                                           Height="25"
+                                           VerticalAlignment="Center"/>
+
+                                    <TextBlock Text="{Binding Comfort}"
+                                               FontSize="16"
+                                               FontWeight="Medium"
+                                               Foreground="#CCCCCC"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
                         </Grid>
                     </Border>
 
