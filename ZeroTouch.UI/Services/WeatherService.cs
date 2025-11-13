@@ -10,7 +10,13 @@ namespace ZeroTouch.UI.Services
     {
         private readonly HttpClient _httpClient = new();
 
-        public async Task<(string condition, string temperature, string pop, string comfort)> GetWeatherAsync(string location)
+        public async Task<(
+            string condition,
+            string minTemp,
+            string maxTemp,
+            string pop,
+            string comfort
+        )> GetWeatherAsync(string location)
         {
             string url = string.Empty;
 
@@ -22,7 +28,7 @@ namespace ZeroTouch.UI.Services
                 if (string.IsNullOrWhiteSpace(apiKey))
                     throw new InvalidOperationException("Missing CWA_API_KEY in .env file.");
 
-                url = $"https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001" + 
+                url = $"https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001" +
                       $"?Authorization={apiKey}&format=JSON&locationName={location}";
 
                 var response = await _httpClient.GetAsync(url);
@@ -41,9 +47,7 @@ namespace ZeroTouch.UI.Services
                 string pop = GetParameter(locationData, "PoP");
                 string ci = GetParameter(locationData, "CI");
 
-                string tempRange = $"{minT}–{maxT}°C";
-
-                return (wx, tempRange, $"{pop}%", ci);
+                return (wx, minT, maxT, $"{pop}%", ci);
             }
             catch (Exception ex)
             {
@@ -52,7 +56,7 @@ namespace ZeroTouch.UI.Services
                 Console.WriteLine($"[WeatherService] URL = {url}");
                 Console.WriteLine($"[WeatherService] Exception: {ex}");
 
-                return ("Unavailable", "--°C", "N/A", "N/A");
+                return ("Unavailable", "--", "--", "N/A", "N/A");
             }
         }
 
