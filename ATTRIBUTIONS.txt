@@ -29,3 +29,13 @@ Settings Icon
 Source: Flaticon (<a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>)
 AUTHOR: Freepik
 LICENSE: Flaticon License
+
+Precipitation Icon
+Source: Flaticon (<a href="https://www.flaticon.com/free-icons/precipitation" title="precipitation icons">Precipitation icons created by Laura Reen - Flaticon</a>)
+AUTHOR: Laura Reen
+LICENSE: Flaticon License
+
+Leaf Icon
+Source: Flaticon (<a href="https://www.flaticon.com/free-icons/leaf" title="leaf icons">Leaf icons created by Good Ware - Flaticon</a>)
+AUTHOR: Good Ware
+LICENSE: Flaticon License
