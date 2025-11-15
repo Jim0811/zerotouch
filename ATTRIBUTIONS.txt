@@ -69,3 +69,13 @@ Pond.mp3
 Source: FreePD (https://freepd.com/)
 AUTHOR: Rafael Krux
 LICENSE: Creative Commons 0 (CC0) - Public Domain
+
+Nostalgic_Piano.mp3
+Source: FreePD (https://freepd.com/)
+AUTHOR: Rafael Krux
+LICENSE: Creative Commons 0 (CC0) - Public Domain
+
+Shining_Stars.mp3
+Source: FreePD (https://freepd.com/)
+AUTHOR: Rafael Krux
+LICENSE: Creative Commons 0 (CC0) - Public Domain
