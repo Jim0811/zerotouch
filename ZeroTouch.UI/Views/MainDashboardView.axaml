@@ -252,7 +252,7 @@
                     <Border Grid.Row="1"
                             CornerRadius="25"
                             Background="#D93C3C"
-                            Margin="12">
+                                Margin="12"
                         <StackPanel Margin="15" Spacing="8">
 
                             <TextBlock Text="🎵 Player"

@@ -3,6 +3,7 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Timers;
 using System.Threading.Tasks;
 using ZeroTouch.UI.Services;
 
@@ -10,6 +11,12 @@ namespace ZeroTouch.UI.ViewModels
 {
     public partial class MainDashboardViewModel : ViewModelBase
     {
+        private readonly Timer _timer;
+        private bool _blinkColon = true;
+        [ObservableProperty] private string currentTime = string.Empty;
+        [ObservableProperty] private bool is24HourFormat = true;
+        [ObservableProperty] private bool blinkColonEnabled = true;
+
         private readonly WeatherService _weatherService = new();
         private bool _testTempBar = false;
         [ObservableProperty] private string _location = "高雄市";
@@ -39,6 +46,11 @@ namespace ZeroTouch.UI.ViewModels
 
         public MainDashboardViewModel()
         {
+            _timer = new Timer(1000);
+            _timer.Elapsed += (_, __) => UpdateTime();
+            _timer.Start();
+            UpdateTime();
+
             _ = LoadWeatherAsync();
             _player = new MusicPlayerService();
 
@@ -57,6 +69,25 @@ namespace ZeroTouch.UI.ViewModels
                 Duration = dur;
                 IsPlaying = true;
             };
+        }
+
+        private void UpdateTime()
+        {
+            var now = DateTime.Now;
+            string format = Is24HourFormat ? "HH:mm" : "hh:mm tt";
+            var timeText = now.ToString(format);
+
+            if (BlinkColonEnabled)
+            {
+                if (!_blinkColon)
+                {
+                    timeText = timeText.Replace(":", " ");
+                }
+
+                _blinkColon = !_blinkColon;
+            }
+
+            CurrentTime = timeText;
         }
 
         private async Task LoadWeatherAsync()
