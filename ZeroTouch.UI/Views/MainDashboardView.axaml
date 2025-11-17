@@ -5,10 +5,16 @@
              xmlns:vm="using:ZeroTouch.UI.ViewModels"
              xmlns:gif="clr-namespace:Avalonia.Labs.Gif;assembly=Avalonia.Labs.Gif"
              xmlns:ani="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation"
+             xmlns:converters="using:ZeroTouch.UI.Converters"
              mc:Ignorable="d"
              x:Class="ZeroTouch.UI.Views.MainDashboardView"
              x:DataType="vm:MainDashboardViewModel">
 
+    <UserControl.Resources>
+        <converters:BoolTrueToOneConverter x:Key="TrueToOne" />
+        <converters:BoolFalseToOneConverter x:Key="FalseToOne" />
+    </UserControl.Resources>
+    
     <UserControl.Styles>
         <Style Selector="Button.dock-btn">
             <Setter Property="Width" Value="70"/>
@@ -331,15 +337,30 @@
                                             CornerRadius="25"
                                             Command="{Binding PlayPauseCommand}">
 
-                                        <Border x:Name="PlayBtnBorder"
-                                                Background="Transparent"
-                                                CornerRadius="25">
-                                            <Image Width="26"
-                                                   Source="{Binding PlayPauseIconPath}"/>
-                                        </Border>
+                                        <Grid>
+                                            <!-- Play -->
+                                            <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/play-button.png"
+                                                   Width="26"
+                                                   Opacity="{Binding IsPlaying, Converter={StaticResource FalseToOne}}">
+                                                <Image.Transitions>
+                                                    <Transitions>
+                                                        <DoubleTransition Property="Opacity" Duration="0:0:0.25" />
+                                                    </Transitions>
+                                                </Image.Transitions>
+                                            </Image>
 
+                                            <!-- Pause -->
+                                            <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/pause-button.png"
+                                                   Width="26"
+                                                   Opacity="{Binding IsPlaying, Converter={StaticResource TrueToOne}}">
+                                                <Image.Transitions>
+                                                    <Transitions>
+                                                        <DoubleTransition Property="Opacity" Duration="0:0:0.25" />
+                                                    </Transitions>
+                                                </Image.Transitions>
+                                            </Image>
+                                        </Grid>
                                     </Button>
-
 
                                     <!-- Next song -->
                                     <Button Classes="dock-btn music-btn"
