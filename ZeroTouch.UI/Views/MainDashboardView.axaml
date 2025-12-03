@@ -145,7 +145,7 @@
     </UserControl.Styles>
 
     <Viewbox Stretch="Uniform" StretchDirection="Both">
-        <Grid>
+        <Grid Width="1000" Height="560">
             
             <!-- Main Dashboard (Dashboard View) -->
             <Border CornerRadius="30"
@@ -253,7 +253,9 @@
                             Background="#1E1E1E"
                             ClipToBounds="True"  Margin="12">
 
-                        <mapsui:MapControl Name="MapControl" />
+                        <mapsui:MapControl Name="MapControl"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch" />
 
                     </Border>
 
