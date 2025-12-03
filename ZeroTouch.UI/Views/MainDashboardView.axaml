@@ -5,6 +5,7 @@
              xmlns:vm="using:ZeroTouch.UI.ViewModels"
              xmlns:gif="clr-namespace:Avalonia.Labs.Gif;assembly=Avalonia.Labs.Gif"
              xmlns:ani="clr-namespace:Avalonia.Animation;assembly=Avalonia.Animation"
+             xmlns:mapsui="clr-namespace:Mapsui.UI.Avalonia;assembly=Mapsui.UI.Avalonia"
              xmlns:converters="using:ZeroTouch.UI.Converters"
              mc:Ignorable="d"
              x:Class="ZeroTouch.UI.Views.MainDashboardView"
@@ -250,14 +251,10 @@
                             Grid.Column="1"
                             CornerRadius="25"
                             Background="#1E1E1E"
-                            Margin="12">
-                        
-                        <TextBlock Text="Map View (Placeholder)"
-                                   Foreground="#DDDDDD"
-                                   FontSize="32"
-                                   FontWeight="Medium"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                            ClipToBounds="True"  Margin="12">
+
+                        <mapsui:MapControl Name="MapControl" />
+
                     </Border>
 
                     <!-- Info Panel -->
