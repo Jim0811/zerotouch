@@ -25,7 +25,7 @@ namespace ZeroTouch.UI.ViewModels
         [ObservableProperty] private string _weatherCondition = "Loading...";
         [ObservableProperty] private string _pop = "--%";
         [ObservableProperty] private string _comfort = "Loading...";
-        [ObservableProperty] private string _weatherIconPath = "avares://ZeroTouch.UI/Assets/Icons/Dark/rainy.gif";
+        [ObservableProperty] private string _weatherIconPath = "avares://ZeroTouch.UI/Assets/Weather/Day/clear.gif";
         [ObservableProperty] private string _minTemperature = "--°";
         [ObservableProperty] private string _maxTemperature = "--°";
         [ObservableProperty] private IBrush _temperatureBarBrush = new SolidColorBrush(Colors.Orange);

@@ -248,28 +248,49 @@
 
                     <!-- Map Panel -->
                     <Border Grid.Row="0"
+                            Grid.RowSpan="2"
                             Grid.Column="1"
                             CornerRadius="25"
                             Background="#1E1E1E"
-                            ClipToBounds="True"  Margin="12">
-
+                            ClipToBounds="True"
+                            Margin="12">
                         <mapsui:MapControl Name="MapControl"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch" />
-
                     </Border>
 
-                    <!-- Info Panel -->
                     <Border Grid.Row="1"
                             Grid.Column="1"
-                            CornerRadius="25"
-                            Background="#191919"
-                            Margin="12">
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Center"
+                            Height="80"
+                            Width="350"
+                            CornerRadius="20"
+                            Background="#CC000000"
+                            Margin="0,0,0,30"
+                            BoxShadow="0 4 10 #0005">
                         
-                        <TextBlock Text="Navigation Info (Placeholder)"
-                                   Foreground="#AAAAAA"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                        <Grid ColumnDefinitions="Auto,*" Margin="15">
+                            <Border Grid.Column="0"
+                                    Width="50"
+                                    Height="50"
+                                    CornerRadius="25"
+                                    Background="#2ECC71"
+                                    Margin="0,0,15,0">
+                                
+                                <TextBlock Text="↱"
+                                           FontSize="30"
+                                           Foreground="White"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Margin="0,-5,0,0"/>
+                            </Border>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Turn Right" FontWeight="Bold" Foreground="White" FontSize="18"/>
+                                <TextBlock Text="in 300 meters" Foreground="#CCCCCC" FontSize="14"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
 
                     <!-- Right Panels -->
