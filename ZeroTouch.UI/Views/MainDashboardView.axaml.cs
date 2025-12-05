@@ -29,6 +29,7 @@ namespace ZeroTouch.UI.Views
 
         private int _currentStepIndex = 0;
 
+        private MemoryLayer? _routeLayer;
         private MemoryLayer? _vehicleLayer;
         private MapControl? _mapControl;
 
@@ -90,10 +91,10 @@ namespace ZeroTouch.UI.Views
                 originalWaypoints.Add(new MPoint(p.x, p.y));
             }
 
-            _interpolatedPath = InterpolatePath(originalWaypoints, stepSize: 0.35);
+            _interpolatedPath = InterpolatePath(originalWaypoints, stepSize: 1.2);
 
-            var routeLayer = CreateRouteLayer(_interpolatedPath);
-            map.Layers.Add(routeLayer);
+            _routeLayer = CreateRouteLayer(_interpolatedPath);
+            map.Layers.Add(_routeLayer);
 
             _vehicleLayer = CreateVehicleLayer(_interpolatedPath[0]);
             map.Layers.Add(_vehicleLayer);
@@ -200,7 +201,7 @@ namespace ZeroTouch.UI.Views
             if (_mapControl?.Map?.Navigator == null) return;
 
             _mapControl.Map.Navigator.CenterOn(_interpolatedPath[0]);
-            _mapControl.Map.Navigator.ZoomTo(1.0);
+            _mapControl.Map.Navigator.ZoomTo(2.0);
 
             _navigationTimer = new DispatcherTimer
             {
@@ -213,10 +214,56 @@ namespace ZeroTouch.UI.Views
 
                 if (_currentStepIndex >= _interpolatedPath.Count)
                 {
-                    _currentStepIndex = 0;  // Loop back to start
+                    _currentStepIndex = 1;  // Loop back to start
                 }
 
                 var newLocation = _interpolatedPath[_currentStepIndex];
+
+                var prevIndex = _currentStepIndex - 1;
+
+                if (prevIndex < 0) prevIndex = 0;
+
+                var prevLocation = _interpolatedPath[prevIndex];
+
+                var dx = newLocation.X - prevLocation.X;
+                var dy = newLocation.Y - prevLocation.Y;
+
+                if (Math.Abs(dx) > 0.0001 || Math.Abs(dy) > 0.0001)
+                {
+                    var angleRad = Math.Atan2(dy, dx);
+                    var angleDeg = angleRad * 180.0 / Math.PI;
+
+                    var rotation = angleDeg - 90;
+
+                    _mapControl.Map.Navigator.RotateTo(rotation, duration: 0);
+                }
+
+                if (_routeLayer != null)
+                {
+                    var remainingPoints = _interpolatedPath.Skip(_currentStepIndex).ToList();
+
+                    if (remainingPoints.Count >= 2)
+                    {
+                        var coords = remainingPoints.Select(p => new Coordinate(p.X, p.Y)).ToArray();
+                        var newLineString = new LineString(coords);
+
+                        var newRouteFeature = new GeometryFeature { Geometry = newLineString };
+
+                        newRouteFeature.Styles.Add(new VectorStyle
+                        {
+                            Line = new Pen(Color.FromArgb(200, 33, 150, 243), 6)
+                        });
+
+                        _routeLayer.Features = new[] { newRouteFeature };
+                        _routeLayer.DataHasChanged();
+                    }
+                    else
+                    {
+                        // Final point reached, clear the route
+                        _routeLayer.Features = new List<IFeature>();
+                        _routeLayer.DataHasChanged();
+                    }
+                }
 
                 if (_vehicleLayer != null)
                 {
@@ -225,10 +272,17 @@ namespace ZeroTouch.UI.Views
                         Geometry = new NetTopologySuite.Geometries.Point(newLocation.X, newLocation.Y)
                     };
 
-                    newFeature.Styles.Add(_vehicleLayer.Features.First().Styles.First());
+                    var oldFeature = _vehicleLayer.Features.FirstOrDefault();
+                    if (oldFeature?.Styles.FirstOrDefault() is IStyle oldStyle)
+                    {
+                        newFeature.Styles.Add(oldStyle);
+                    }
+                    else
+                    {
+                        newFeature.Styles.Add(new SymbolStyle { Fill = new Brush(Color.Red), SymbolScale = 0.5f });
+                    }
 
                     _vehicleLayer.Features = new[] { newFeature };
-
                     _vehicleLayer.DataHasChanged();
                 }
 
@@ -236,7 +290,7 @@ namespace ZeroTouch.UI.Views
                 _mapControl.Map.Navigator.CenterOn(newLocation);
 
                 // Rotate the map slightly for effect
-                _mapControl.Map.Navigator.RotateTo(_mapControl.Map.Navigator.Viewport.Rotation + 0.01);
+                // _mapControl.Map.Navigator.RotateTo(_mapControl.Map.Navigator.Viewport.Rotation + 0.01);
 
                 _mapControl.RefreshGraphics();
             };
