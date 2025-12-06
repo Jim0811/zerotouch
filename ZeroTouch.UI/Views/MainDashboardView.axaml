@@ -31,8 +31,7 @@
                 <ControlTemplate TargetType="Button">
 
                     <Grid>
-
-                        <Border CornerRadius="35"
+                        <Border CornerRadius="{TemplateBinding CornerRadius}"
                                 Background="{TemplateBinding Background}">
 
                             <ContentPresenter
@@ -44,7 +43,7 @@
 
                         <!-- Ring -->
                         <Border x:Name="OuterRing"
-                                CornerRadius="35"
+                                CornerRadius="{TemplateBinding CornerRadius}"
                                 BorderThickness="3"
                                 BorderBrush="Transparent"/>
                     </Grid>
@@ -710,7 +709,7 @@
                                             
                                             <StackPanel Spacing="8">
                                                 
-                                                <TextBlock Text="Connectivity"
+                                                <TextBlock Text="Devices"
                                                            FontWeight="Bold"
                                                            Foreground="White"/>
                                                 
@@ -881,6 +880,7 @@
                                                     </StackPanel>
                                                     
                                                     <Button Grid.Column="2"
+                                                            Classes="dock-btn"
                                                             Width="40"
                                                             Height="40"
                                                             CornerRadius="20"
@@ -927,6 +927,7 @@
                                                     </StackPanel>
                                                     
                                                     <Button Grid.Column="2"
+                                                            Classes="dock-btn"
                                                             Width="40"
                                                             Height="40"
                                                             CornerRadius="20"
@@ -973,6 +974,7 @@
                                                     </StackPanel>
                                                     
                                                     <Button Grid.Column="2"
+                                                            Classes="dock-btn"
                                                             Width="40"
                                                             Height="40"
                                                             CornerRadius="20"
@@ -991,39 +993,96 @@
                                     CornerRadius="25"
                                     Background="#1E1E1E"
                                     Margin="12"
-                                    Padding="30">
-                                
-                                <Grid RowDefinitions="Auto, *, Auto">
+                                    Padding="20">
 
-                                    <TextBlock Grid.Row="0"
-                                               Text="{Binding DisplayNumber}"
-                                               Foreground="White"
-                                               FontSize="32"
-                                               HorizontalAlignment="Center"
-                                               Margin="0,0,0,20"/>
+                                <Grid RowDefinitions="Auto, Auto, Auto" VerticalAlignment="Center">
+
+                                    <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,10">
+                                        
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding DisplayNumber}"
+                                                   Foreground="White"
+                                                   FontSize="36"
+                                                   FontWeight="SemiBold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+
+                                        <Button Grid.Column="1"
+                                                Classes="dock-btn"
+                                                Width="50" Height="50"
+                                                CornerRadius="25"
+                                                Background="#333333"
+                                                Command="{Binding BackspaceCommand}"
+                                                HorizontalAlignment="Right">
+                                            
+                                            <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/backspace.png" Width="24"/>
+                                        </Button>
+                                    </Grid>
 
                                     <Grid Grid.Row="1"
                                           ColumnDefinitions="*,*,*"
                                           RowDefinitions="*,*,*,*"
                                           HorizontalAlignment="Center"
-                                          VerticalAlignment="Center">
-                                        
+                                          VerticalAlignment="Center"
+                                          Margin="0,0,0,10">
+
                                         <Grid.Styles>
                                             <Style Selector="Button.keypad-btn">
                                                 <Setter Property="Width" Value="60"/>
                                                 <Setter Property="Height" Value="60"/>
                                                 <Setter Property="CornerRadius" Value="30"/>
-                                                <Setter Property="Background" Value="#303030"/>
-                                                <Setter Property="FontSize" Value="24"/>
+                                                <Setter Property="Background" Value="#252525"/>
                                                 <Setter Property="Foreground" Value="White"/>
-                                                <Setter Property="Margin" Value="10"/>
+                                                <Setter Property="FontSize" Value="24"/>
+                                                <Setter Property="Margin" Value="6"/>
                                                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                                 <Setter Property="VerticalContentAlignment" Value="Center"/>
                                                 <Setter Property="Command" Value="{Binding KeypadTapCommand}"/>
+
+                                                <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
+                                                
+                                                <Setter Property="Transitions">
+                                                    <Transitions>
+                                                        <TransformOperationsTransition Property="RenderTransform"
+                                                                                       Duration="0:0:0.2"
+                                                                                       Easing="CubicEaseOut"/>
+                                                        
+                                                        <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                                                        <BrushTransition Property="Foreground" Duration="0:0:0.2"/>
+                                                    </Transitions>
+                                                </Setter>
+
+                                                <Setter Property="Template">
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Grid>
+                                                            <Border CornerRadius="{TemplateBinding CornerRadius}"
+                                                                    Background="{TemplateBinding Background}">
+                                                                
+                                                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                                                  HorizontalAlignment="Center"
+                                                                                  VerticalAlignment="Center"/>
+                                                            </Border>
+
+                                                            <Border x:Name="OuterRing"
+                                                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                                                    BorderThickness="3"
+                                                                    BorderBrush="Transparent"/>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter>
                                             </Style>
-                                            
+
                                             <Style Selector="Button.keypad-btn:pointerover">
-                                                <Setter Property="Background" Value="#505050"/>
+                                                <Setter Property="Background" Value="#353535"/>
+                                                <Setter Property="Foreground" Value="#FFA500"/>
+                                            </Style>
+
+                                            <Style Selector="Button.keypad-btn:pointerover /template/ Border#OuterRing">
+                                                <Setter Property="BorderBrush" Value="White"/>
+                                            </Style>
+
+                                            <Style Selector="Button.keypad-btn:pressed">
+                                                <Setter Property="RenderTransform" Value="scale(0.85)"/>
                                             </Style>
                                         </Grid.Styles>
 
@@ -1039,20 +1098,26 @@
                                         <Button Classes="keypad-btn" Grid.Row="2" Grid.Column="1" Content="8" CommandParameter="8"/>
                                         <Button Classes="keypad-btn" Grid.Row="2" Grid.Column="2" Content="9" CommandParameter="9"/>
 
-                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="0" Content="*" FontSize="28" CommandParameter="*"/>
+                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="0" Content="*" CommandParameter="*"/>
                                         <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="1" Content="0" CommandParameter="0"/>
-                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="2" Content="#" FontSize="24" CommandParameter="#"/>
+                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="2" Content="#" CommandParameter="#"/>
                                     </Grid>
 
                                     <Button Grid.Row="2"
+                                            Classes="dock-btn"
                                             Width="70" Height="70"
                                             CornerRadius="35"
                                             Background="#2ECC71"
                                             HorizontalAlignment="Center"
-                                            Command="{Binding CallCommand}"
-                                            Margin="0,20,0,0">
-                                        
-                                        <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png" Width="30" Height="30"/>
+                                            Command="{Binding CallCommand}">
+
+                                        <Button.Styles>
+                                            <Style Selector="Button:pointerover">
+                                                <Setter Property="Background" Value="#27AE60"/>
+                                            </Style>
+                                        </Button.Styles>
+
+                                        <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png" Width="36" Height="36"/>
                                     </Button>
                                 </Grid>
                             </Border>
