@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using BruTile.Web;
 using Mapsui;
 using Mapsui.Extensions;
@@ -41,13 +43,31 @@ namespace ZeroTouch.UI.Views
             InitializeComponent();
 
             InitializeMap();
+
+            var slider = this.FindControl<Slider>("ProgressSlider");
+            if (slider != null)
+            {
+                slider.AddHandler(PointerPressedEvent, OnSliderDragStarted, RoutingStrategies.Tunnel);
+                slider.AddHandler(PointerReleasedEvent, OnSliderDragEnded, RoutingStrategies.Tunnel);
+
+                slider.AddHandler(PointerCaptureLostEvent, OnSliderDragEnded, RoutingStrategies.Tunnel);
+            }
         }
 
-        private void MusicSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+        private void OnSliderDragStarted(object? sender, PointerPressedEventArgs e)
         {
             if (DataContext is MainDashboardViewModel vm)
             {
-                vm.SeekCommand.Execute((long)e.NewValue);
+                vm.IsUserInteracting = true;
+            }
+        }
+
+        private void OnSliderDragEnded(object? sender, PointerReleasedEventArgs e)
+        {
+            if (DataContext is MainDashboardViewModel vm)
+            {
+                vm.IsUserInteracting = false;
+                vm.SeekCommand.Execute(vm.Progress);
             }
         }
 

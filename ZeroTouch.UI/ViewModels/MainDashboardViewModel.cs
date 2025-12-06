@@ -36,6 +36,7 @@ namespace ZeroTouch.UI.ViewModels
         [ObservableProperty] private long _progress;
         [ObservableProperty] private long _duration;
         [ObservableProperty] private bool _isPlaying;
+        [ObservableProperty] private bool _isUserInteracting;
 
         // Page state
         // 0: Settings
@@ -108,6 +109,15 @@ namespace ZeroTouch.UI.ViewModels
                 @"E:\ZeroTouch\ZeroTouch\ZeroTouch.UI\Assets\Music\Shining_Stars.mp3",
                 @"E:\ZeroTouch\ZeroTouch\ZeroTouch.UI\Assets\Music\Nostalgic_Piano.mp3"
             });
+
+            _player.PositionChanged += (pos, dur) =>
+            {
+                if (!IsUserInteracting)
+                {
+                    Progress = pos;
+                    Duration = dur;
+                }
+            };
 
             _player.PositionChanged += (pos, dur) =>
             {

@@ -740,10 +740,10 @@
                                                    Foreground="#F0F0F0"/>
 
                                         <!-- Progress Bar -->
-                                        <Slider Minimum="0"
+                                        <Slider x:Name="ProgressSlider"
+                                                Minimum="0"
                                                 Maximum="{Binding Duration}"
-                                                Value="{Binding Progress}"
-                                                ValueChanged="MusicSlider_OnValueChanged"/>
+                                                Value="{Binding Progress}" />
 
                                         <!-- Control Buttons -->
                                         <StackPanel Orientation="Horizontal"
