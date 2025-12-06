@@ -59,6 +59,9 @@ All assets remain the property of their respective authors and are used accordin
 | **Microphone On Icon** | <a href="https://www.flaticon.com/free-icons/mic" title="mic icons">Mic icons created by Hight Quality Icons - Flaticon</a> | Hight Quality Icons | Flaticon License |
 | **Microphone Off Icon** | <a href="https://www.flaticon.com/free-icons/microphone" title="microphone icons">Microphone icons created by Hight Quality Icons - Flaticon</a> | Hight Quality Icons | Flaticon License |
 | **Hang Up Icon** | <a href="https://www.flaticon.com/free-icons/end" title="end icons">End icons created by dmitri13 - Flaticon</a> | dmitri13 | Flaticon License |
+| **Dial Icon** | <a href="https://www.flaticon.com/free-icons/keypad" title="keypad icons">Keypad icons created by Smashicons - Flaticon</a> | Smashicons | Flaticon License |
+| **Speaker On Icon** | <a href="https://www.flaticon.com/free-icons/volume" title="volume icons">Volume icons created by Icon Hubs - Flaticon</a> | Icon Hubs | Flaticon License |
+| **Speaker Off Icon** | <a href="https://www.flaticon.com/free-icons/mute" title="mute icons">Mute icons created by Icon Hubs - Flaticon</a> | Icon Hubs | Flaticon License |
 
 <br>
 
