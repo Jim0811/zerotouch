@@ -18,23 +18,23 @@
 
     <UserControl.Styles>
         <Style Selector="Button.dock-btn">
-            
+
             <Setter Property="Width" Value="70"/>
             <Setter Property="Height" Value="70"/>
             <Setter Property="CornerRadius" Value="35"/>
             <Setter Property="Background" Value="#10FFFFFF"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            
+
             <Setter Property="Template">
-                
+
                 <ControlTemplate TargetType="Button">
-                    
+
                     <Grid>
-                        
+
                         <Border CornerRadius="35"
                                 Background="{TemplateBinding Background}">
-                            
+
                             <ContentPresenter
                                 Content="{TemplateBinding Content}"
                                 ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -42,7 +42,7 @@
                                 VerticalAlignment="Center"/>
                         </Border>
 
-                        <!-- ring -->
+                        <!-- Ring -->
                         <Border x:Name="OuterRing"
                                 CornerRadius="35"
                                 BorderThickness="3"
@@ -60,13 +60,13 @@
             <Style Selector="^:pointerover /template/ Border#OuterRing">
                 <Setter Property="BorderBrush" Value="White"/>
             </Style>
-            
+
         </Style>
 
         <Style Selector="Button.music-btn:pointerover">
             <Setter Property="Background" Value="#A0000000"/>
         </Style>
-        
+
         <Style Selector="Button.music-btn:pointerover /template/ Border#OuterRing">
             <Setter Property="BorderBrush" Value="#FFFFFFFF"/>
             <Setter Property="BorderThickness" Value="2.5"/>
@@ -75,36 +75,36 @@
         <!-- Music buttons bounce -->
         <Style Selector="Button.music-btn">
             <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
-            
+
             <Setter Property="RenderTransform">
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
             </Setter>
         </Style>
-        
+
         <Style Selector="Button.music-btn:not(:pressed)">
             <Style.Animations>
                 <Animation Duration="0:0:0.45" Easing="SineEaseInOut">
-                    
+
                     <KeyFrame Cue="0%">
                         <Setter Property="ScaleTransform.ScaleX" Value="1"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="1"/>
                     </KeyFrame>
-                    
+
                     <KeyFrame Cue="40%">
                         <Setter Property="ScaleTransform.ScaleX" Value="0.75"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="0.75"/>
                     </KeyFrame>
-                    
+
                     <KeyFrame Cue="70%">
                         <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
                     </KeyFrame>
-                    
+
                     <KeyFrame Cue="100%">
                         <Setter Property="ScaleTransform.ScaleX" Value="1"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="1"/>
                     </KeyFrame>
-                
+
                 </Animation>
             </Style.Animations>
         </Style>
@@ -112,40 +112,40 @@
         <!-- Dock buttons bounce -->
         <Style Selector="Button.dock-btn">
             <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
-            
+
             <Setter Property="RenderTransform">
                 <ScaleTransform ScaleX="1" ScaleY="1"/>
             </Setter>
         </Style>
-        
+
         <Style Selector="Button.dock-btn:not(.music-btn):not(:pressed)">
             <Style.Animations>
                 <Animation Duration="0:0:0.45" Easing="SineEaseInOut">
-                    
+
                     <KeyFrame Cue="0%">
                         <Setter Property="ScaleTransform.ScaleX" Value="1"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="1"/>
                     </KeyFrame>
-                    
+
                     <KeyFrame Cue="40%">
                         <Setter Property="ScaleTransform.ScaleX" Value="0.75"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="0.75"/>
                     </KeyFrame>
-                    
+
                     <KeyFrame Cue="70%">
                         <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
                     </KeyFrame>
-                    
+
                     <KeyFrame Cue="100%">
                         <Setter Property="ScaleTransform.ScaleX" Value="1"/>
                         <Setter Property="ScaleTransform.ScaleY" Value="1"/>
                     </KeyFrame>
-                
+
                 </Animation>
             </Style.Animations>
         </Style>
-        
+
     </UserControl.Styles>
 
     <Viewbox Stretch="Uniform" StretchDirection="Both">
@@ -173,7 +173,7 @@
                                 CornerRadius="18"
                                 Background="#2ECC71"
                                 BoxShadow="0 0 8 #0008">
-                            
+
                             <TextBlock Text="{Binding CurrentTime}"
                                        FontSize="18"
                                        FontWeight="Bold"
@@ -188,22 +188,22 @@
                         <Panel Grid.Row="1"
                                VerticalAlignment="Stretch"
                                HorizontalAlignment="Center">
-                            
+
                             <Border Background="#20FFFFFF"
                                     CornerRadius="40"
                                     Padding="15"
                                     BoxShadow="0 0 20 #0006">
-                                
+
                                 <Border.Effect>
                                     <BlurEffect Radius="4"/>
                                 </Border.Effect>
-                                
+
                             </Border>
-                            
+
                             <Border Background="Transparent"
                                     CornerRadius="40"
                                     Padding="15">
-                                
+
                                 <StackPanel Orientation="Vertical"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
@@ -212,71 +212,69 @@
                                     <!-- Home -->
                                     <Button Classes="dock-btn"
                                             Command="{Binding ShowHomeCommand}">
-                                        
+
                                         <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/home.png"
                                                Width="40" Height="40"/>
                                     </Button>
-                                    
+
                                     <!-- Phone -->
                                     <Button Classes="dock-btn"
                                             Command="{Binding ShowPhoneCommand}">
-                                        
+
                                         <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png"
                                                Width="40" Height="40"/>
                                     </Button>
-                                    
+
                                     <!-- Maps -->
                                     <Button Classes="dock-btn"
                                             Command="{Binding ShowMapsCommand}">
-                                        
+
                                         <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/google-maps.png"
                                                Width="40" Height="40"/>
                                     </Button>
-                                    
+
                                     <!-- Settings -->
                                     <Button Classes="dock-btn"
                                             Command="{Binding ShowSettingsCommand}">
-                                        
+
                                         <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/settings.png"
                                                Width="40" Height="40"/>
                                     </Button>
-                                    
+
                                 </StackPanel>
                             </Border>
                         </Panel>
                     </Grid>
 
-                    <!-- Map Panel -->
                     <Carousel Grid.Column="1"
-                              SelectedIndex="{Binding IsSettingsOpen, Converter={StaticResource TrueToOne}}">
+                              SelectedIndex="{Binding CurrentPageIndex}">
 
                         <Carousel.PageTransition>
-                            <CompositePageTransition> 
+                            <CompositePageTransition>
                                 <PageSlide Duration="0.5"
                                            Orientation="Vertical"
                                            SlideInEasing="CubicEaseOut"
                                            SlideOutEasing="CubicEaseOut"/>
-                                <CrossFade Duration="0.5" /> 
-                            </CompositePageTransition> 
+                                <CrossFade Duration="0.5" />
+                            </CompositePageTransition>
                         </Carousel.PageTransition>
 
-                        <Grid ColumnDefinitions="2*,*"
-                              Margin="12,0,0,0">
-                            
+                        <Grid ColumnDefinitions="2*,*" Margin="12,0,0,0">
+
                             <Grid Grid.Column="0" RowDefinitions="*,Auto">
-                                
+
                                 <Border Grid.Row="0"
                                         Grid.RowSpan="2"
                                         CornerRadius="25"
                                         Background="#1E1E1E"
                                         ClipToBounds="True"
                                         Margin="12">
-                                    
-                                    <mapsui:MapControl Name="MapControl" 
+
+                                    <mapsui:MapControl Name="MapControl"
                                                        HorizontalAlignment="Stretch"
                                                        VerticalAlignment="Stretch" />
                                 </Border>
-                                
+
                                 <Border Grid.Row="1"
                                         VerticalAlignment="Bottom"
                                         HorizontalAlignment="Center"
@@ -286,16 +284,16 @@
                                         Background="#CC000000"
                                         Margin="0,0,0,30"
                                         BoxShadow="0 4 10 #0005">
-                                    
+
                                     <Grid ColumnDefinitions="Auto,*" Margin="15">
-                                        
+
                                         <Border Grid.Column="0"
                                                 Width="50"
                                                 Height="50"
                                                 CornerRadius="25"
                                                 Background="#2ECC71"
                                                 Margin="0,0,15,0">
-                                            
+
                                             <TextBlock Text="↱"
                                                        FontSize="30"
                                                        Foreground="White"
@@ -303,34 +301,33 @@
                                                        VerticalAlignment="Center"
                                                        Margin="0,-5,0,0"/>
                                         </Border>
-                                        
+
                                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            
-                                            <!-- Navigation info -->
+
                                             <TextBlock Text="Turn Right"
                                                        FontWeight="Bold"
                                                        Foreground="White"
                                                        FontSize="18"/>
-                                            
+
                                             <TextBlock Text="in 300 meters"
                                                        Foreground="#CCCCCC"
                                                        FontSize="14"/>
-                                        
                                         </StackPanel>
                                     </Grid>
                                 </Border>
                             </Grid>
 
                             <Grid Grid.Column="1" RowDefinitions="*,*">
-                                
+
                                 <Border Grid.Row="0"
                                         CornerRadius="25"
                                         Background="#202020"
-                                        Margin="12" Padding="18">
-                                    
+                                        Margin="12"
+                                        Padding="18">
+
                                     <Grid RowDefinitions="Auto,Auto"
                                           ColumnDefinitions="*,Auto">
-                                        
+
                                         <StackPanel Grid.Row="0"
                                                     Grid.Column="0"
                                                     VerticalAlignment="Top"
@@ -476,19 +473,16 @@
                                                     Command="{Binding PlayPauseCommand}">
                                                 
                                                 <Grid>
-                                                    
+
                                                     <!-- Play -->
                                                     <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/play-button.png"
                                                            Width="26"
                                                            Opacity="{Binding IsPlaying, Converter={StaticResource FalseToOne}}">
                                                         
                                                         <Image.Transitions>
-                                                            
                                                             <Transitions>
-                                                                <DoubleTransition Property="Opacity"
-                                                                                  Duration="0:0:0.25" />
+                                                                <DoubleTransition Property="Opacity" Duration="0:0:0.25" />
                                                             </Transitions>
-                                                        
                                                         </Image.Transitions>  
                                                     </Image>
 
@@ -496,19 +490,16 @@
                                                     <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/pause-button.png"
                                                            Width="26"
                                                            Opacity="{Binding IsPlaying, Converter={StaticResource TrueToOne}}">
-                                                        
+                                                       
                                                         <Image.Transitions>
-                                                            
                                                             <Transitions>
-                                                                <DoubleTransition Property="Opacity"
-                                                                                  Duration="0:0:0.25" />
+                                                                <DoubleTransition Property="Opacity" Duration="0:0:0.25" />
                                                             </Transitions>
-                                                            
-                                                        </Image.Transitions>  
+                                                        </Image.Transitions>
                                                     </Image>
                                                 </Grid>
                                             </Button>
-                                            
+
                                             <!-- Next song -->
                                             <Button Classes="dock-btn music-btn"
                                                     Width="40"
@@ -527,8 +518,7 @@
                         </Grid>
 
                         <!-- Settings View -->
-                        <Grid ColumnDefinitions="2*,*"
-                              Margin="12,0,0,0">
+                        <Grid ColumnDefinitions="2*,*" Margin="12,0,0,0">
                             
                             <Border Grid.Column="0"
                                     CornerRadius="25"
@@ -623,7 +613,7 @@
                                     </Grid>
                                 </StackPanel>
                             </Border>
-
+                            
                             <Border Grid.Column="1"
                                     CornerRadius="25"
                                     Background="#252525"
@@ -631,18 +621,18 @@
                                     BorderThickness="1"
                                     Margin="12"
                                     Padding="20">
-
+                                
                                 <Grid RowDefinitions="Auto, *, Auto">
-
+                                    
                                     <TextBlock Grid.Row="0"
                                                Text="Vehicle Status"
-                                               FontSize="20"
+                                              FontSize="20"
                                                FontWeight="Bold"
                                                Foreground="#FFA500"
                                                Margin="0,0,0,36"/>
-
+                                    
                                     <StackPanel Grid.Row="1" Spacing="25">
-
+                                        
                                         <StackPanel Spacing="12">
                                             
                                             <Grid>
@@ -664,7 +654,7 @@
                                                          Foreground="#2ECC71"
                                                          Background="#444444"/>
                                         </StackPanel>
-
+                                        
                                         <StackPanel Spacing="12">
                                             
                                             <Grid>
@@ -686,8 +676,9 @@
                                                          Foreground="#E74C3C"
                                                          Background="#444444"/>
                                         </StackPanel>
-
+                                        
                                         <StackPanel Spacing="12">
+                                            
                                             <Grid>
                                                 <TextBlock Text="Storage Usage"
                                                            Foreground="#DDDDDD"
@@ -708,13 +699,13 @@
                                                          Background="#444444"/>
                                         </StackPanel>
                                     </StackPanel>
-
+                                    
                                     <Border Grid.Row="2"
                                             Background="#303030"
                                             CornerRadius="15"
                                             Padding="15"
                                             Margin="0,20,0,0">
-
+                                        
                                         <StackPanel Spacing="12">
                                             
                                             <StackPanel Spacing="8">
@@ -722,7 +713,7 @@
                                                 <TextBlock Text="Connectivity"
                                                            FontWeight="Bold"
                                                            Foreground="White"/>
-
+                                                
                                                 <StackPanel Orientation="Horizontal" Spacing="10" Margin="15,10,0,0">
                                                     
                                                     <Border Width="8"
@@ -735,7 +726,7 @@
                                                                Foreground="#AAAAAA"
                                                                FontSize="12"/>
                                                 </StackPanel>
-
+                                                
                                                 <StackPanel Orientation="Horizontal" Spacing="10" Margin="15,0,0,0">
                                                     
                                                     <Border Width="8"
@@ -749,11 +740,11 @@
                                                                FontSize="12"/>
                                                 </StackPanel>
                                             </StackPanel>
-
+                                            
                                             <Separator Background="#444444" Height="1"/>
-
+                                            
                                             <Grid ColumnDefinitions="Auto, *" Margin="15,0,0,0">
-
+                                                
                                                 <Border Grid.Column="0"
                                                         Width="36" Height="60"
                                                         CornerRadius="6"
@@ -765,13 +756,13 @@
                                                     
                                                     <Grid>
                                                         <Border Background="#20FFFFFF" Margin="2" CornerRadius="3"/>
-
+                                                        
                                                         <Border Width="12" Height="3"
                                                                 Background="Black"
                                                                 CornerRadius="1.5"
                                                                 VerticalAlignment="Top"
                                                                 Margin="0,4,0,0"/>
-
+                                                        
                                                         <Border Width="14" Height="1.5"
                                                                 Background="#555555"
                                                                 VerticalAlignment="Bottom"
@@ -779,7 +770,7 @@
                                                                 Opacity="0.5"/>
                                                     </Grid>
                                                 </Border>
-
+                                                
                                                 <StackPanel Grid.Column="1"
                                                             VerticalAlignment="Center"
                                                             Spacing="6">
@@ -788,11 +779,11 @@
                                                                FontWeight="SemiBold"
                                                                Foreground="White"
                                                                FontSize="14"/>
-
+                                                    
                                                     <StackPanel Orientation="Horizontal"
                                                                 Spacing="15"
                                                                 VerticalAlignment="Center">
-
+                                                        
                                                         <StackPanel Orientation="Horizontal"
                                                                     Spacing="6"
                                                                     VerticalAlignment="Center">
@@ -814,23 +805,255 @@
                                                                        FontSize="11"
                                                                        VerticalAlignment="Center"/>
                                                         </StackPanel>
-
+                                                        
                                                         <StackPanel Orientation="Horizontal"
                                                                     Spacing="2"
                                                                     Height="10"
                                                                     VerticalAlignment="Center">
-
+                                                            
                                                             <Border Width="3" Height="4" Background="White" CornerRadius="1" VerticalAlignment="Bottom"/>
                                                             <Border Width="3" Height="6" Background="White" CornerRadius="1" VerticalAlignment="Bottom"/>
                                                             <Border Width="3" Height="8" Background="White" CornerRadius="1" VerticalAlignment="Bottom"/>
                                                             <Border Width="3" Height="10" Background="#444444" CornerRadius="1" VerticalAlignment="Bottom"/>
                                                         </StackPanel>
-
                                                     </StackPanel>
                                                 </StackPanel>
                                             </Grid>
                                         </StackPanel>
                                     </Border>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="*,*" Margin="12,0,0,0">
+
+                            <Border Grid.Column="0"
+                                    CornerRadius="25"
+                                    Background="#1E1E1E"
+                                    Margin="12"
+                                    Padding="20">
+                                
+                                <Grid RowDefinitions="Auto, *">
+                                    
+                                    <TextBlock Grid.Row="0"
+                                               Text="Favorites"
+                                               FontSize="24"
+                                               FontWeight="Bold"
+                                               Foreground="White"
+                                               Margin="0,0,0,20"/>
+
+                                    <ScrollViewer Grid.Row="1">
+                                        
+                                        <StackPanel Spacing="15">
+                                            
+                                            <Border Background="#252525"
+                                                    CornerRadius="15"
+                                                    Padding="10">
+                                                
+                                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                                    
+                                                    <Border Grid.Column="0"
+                                                            Width="50"
+                                                            Height="50"
+                                                            CornerRadius="25"
+                                                            Background="#3498DB">
+                                                        
+                                                        <TextBlock Text="A"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="20"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    
+                                                    <StackPanel Grid.Column="1"
+                                                                Margin="15,0,0,0"
+                                                                VerticalAlignment="Center">
+                                                        
+                                                        <TextBlock Text="Alice"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="16"/>
+                                                        
+                                                        <TextBlock Text="Mobile"
+                                                                   Foreground="#AAAAAA"
+                                                                   FontSize="12"/>
+                                                    </StackPanel>
+                                                    
+                                                    <Button Grid.Column="2"
+                                                            Width="40"
+                                                            Height="40"
+                                                            CornerRadius="20"
+                                                            Background="#2ECC71">
+                                                        
+                                                        <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png"
+                                                               Width="20"/>
+                                                    </Button>
+                                                </Grid>
+                                            </Border>
+
+                                            <Border Background="#252525"
+                                                    CornerRadius="15"
+                                                    Padding="10">
+                                                
+                                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                                    
+                                                    <Border Grid.Column="0"
+                                                            Width="50"
+                                                            Height="50"
+                                                            CornerRadius="25"
+                                                            Background="#9B59B6">
+                                                        
+                                                        <TextBlock Text="B"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="20"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    
+                                                    <StackPanel Grid.Column="1"
+                                                                Margin="15,0,0,0"
+                                                                VerticalAlignment="Center">
+                                                        
+                                                        <TextBlock Text="Bob"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="16"/>
+                                                        
+                                                        <TextBlock Text="Home"
+                                                                   Foreground="#AAAAAA"
+                                                                   FontSize="12"/>
+                                                    </StackPanel>
+                                                    
+                                                    <Button Grid.Column="2"
+                                                            Width="40"
+                                                            Height="40"
+                                                            CornerRadius="20"
+                                                            Background="#2ECC71">
+                                                        
+                                                        <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png"
+                                                               Width="20"/>
+                                                    </Button>
+                                                </Grid>
+                                            </Border>
+
+                                            <Border Background="#252525"
+                                                    CornerRadius="15"
+                                                    Padding="10">
+                                                
+                                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                                    
+                                                    <Border Grid.Column="0"
+                                                            Width="50"
+                                                            Height="50"
+                                                            CornerRadius="25"
+                                                            Background="#E67E22">
+                                                        
+                                                        <TextBlock Text="J"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="20"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    
+                                                    <StackPanel Grid.Column="1"
+                                                                Margin="15,0,0,0"
+                                                                VerticalAlignment="Center">
+                                                        
+                                                        <TextBlock Text="Jerry"
+                                                                   Foreground="White"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="16"/>
+                                                        
+                                                        <TextBlock Text="Mobile"
+                                                                   Foreground="#AAAAAA"
+                                                                   FontSize="12"/>
+                                                    </StackPanel>
+                                                    
+                                                    <Button Grid.Column="2"
+                                                            Width="40"
+                                                            Height="40"
+                                                            CornerRadius="20"
+                                                            Background="#2ECC71">
+                                                        
+                                                        <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png" Width="20"/>
+                                                    </Button>
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                    CornerRadius="25"
+                                    Background="#1E1E1E"
+                                    Margin="12"
+                                    Padding="30">
+                                
+                                <Grid RowDefinitions="Auto, *, Auto">
+
+                                    <TextBlock Grid.Row="0"
+                                               Text="{Binding DisplayNumber}"
+                                               Foreground="White"
+                                               FontSize="32"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,0,0,20"/>
+
+                                    <Grid Grid.Row="1"
+                                          ColumnDefinitions="*,*,*"
+                                          RowDefinitions="*,*,*,*"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        
+                                        <Grid.Styles>
+                                            <Style Selector="Button.keypad-btn">
+                                                <Setter Property="Width" Value="60"/>
+                                                <Setter Property="Height" Value="60"/>
+                                                <Setter Property="CornerRadius" Value="30"/>
+                                                <Setter Property="Background" Value="#303030"/>
+                                                <Setter Property="FontSize" Value="24"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="Margin" Value="10"/>
+                                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                                <Setter Property="Command" Value="{Binding KeypadTapCommand}"/>
+                                            </Style>
+                                            
+                                            <Style Selector="Button.keypad-btn:pointerover">
+                                                <Setter Property="Background" Value="#505050"/>
+                                            </Style>
+                                        </Grid.Styles>
+
+                                        <Button Classes="keypad-btn" Grid.Row="0" Grid.Column="0" Content="1" CommandParameter="1"/>
+                                        <Button Classes="keypad-btn" Grid.Row="0" Grid.Column="1" Content="2" CommandParameter="2"/>
+                                        <Button Classes="keypad-btn" Grid.Row="0" Grid.Column="2" Content="3" CommandParameter="3"/>
+
+                                        <Button Classes="keypad-btn" Grid.Row="1" Grid.Column="0" Content="4" CommandParameter="4"/>
+                                        <Button Classes="keypad-btn" Grid.Row="1" Grid.Column="1" Content="5" CommandParameter="5"/>
+                                        <Button Classes="keypad-btn" Grid.Row="1" Grid.Column="2" Content="6" CommandParameter="6"/>
+
+                                        <Button Classes="keypad-btn" Grid.Row="2" Grid.Column="0" Content="7" CommandParameter="7"/>
+                                        <Button Classes="keypad-btn" Grid.Row="2" Grid.Column="1" Content="8" CommandParameter="8"/>
+                                        <Button Classes="keypad-btn" Grid.Row="2" Grid.Column="2" Content="9" CommandParameter="9"/>
+
+                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="0" Content="*" FontSize="28" CommandParameter="*"/>
+                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="1" Content="0" CommandParameter="0"/>
+                                        <Button Classes="keypad-btn" Grid.Row="3" Grid.Column="2" Content="#" FontSize="24" CommandParameter="#"/>
+                                    </Grid>
+
+                                    <Button Grid.Row="2"
+                                            Width="70" Height="70"
+                                            CornerRadius="35"
+                                            Background="#2ECC71"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding CallCommand}"
+                                            Margin="0,20,0,0">
+                                        
+                                        <Image Source="avares://ZeroTouch.UI/Assets/Icons/Dark/phone.png" Width="30" Height="30"/>
+                                    </Button>
                                 </Grid>
                             </Border>
                         </Grid>

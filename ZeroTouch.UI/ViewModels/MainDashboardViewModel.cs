@@ -37,8 +37,13 @@ namespace ZeroTouch.UI.ViewModels
         [ObservableProperty] private bool _isPlaying;
 
         // Page state
-        [ObservableProperty] private bool _isDashboardOpen = true;
-        [ObservableProperty] private bool _isSettingsOpen = false;
+        // 0: Dashboard (Home)
+        // 1: Settings
+        // 2: Phone
+        [ObservableProperty] private int _currentPageIndex = 0;
+
+        // Phone Features
+        [ObservableProperty] private string _displayNumber = "";
 
         // Settings options
         [ObservableProperty] private bool _isDarkTheme = true;
@@ -336,29 +341,58 @@ namespace ZeroTouch.UI.ViewModels
         }
 
         [RelayCommand]
+        private void KeypadTap(string number)
+        {
+            if (DisplayNumber.Length < 15)
+            {
+                DisplayNumber += number;
+            }
+        }
+
+        [RelayCommand]
+        private void Backspace()
+        {
+            if (DisplayNumber.Length > 0)
+            {
+                DisplayNumber = DisplayNumber.Substring(0, DisplayNumber.Length - 1);
+            }
+        }
+
+        [RelayCommand]
+        private void Call()
+        {
+            if (!string.IsNullOrEmpty(DisplayNumber))
+            {
+                // TODO: Invoke Call Service
+                Console.WriteLine($"Calling {DisplayNumber}...");
+            }
+        }
+
+        [RelayCommand]
         private void ShowHome()
         {
-            IsDashboardOpen = true;
-            IsSettingsOpen = false;
+            CurrentPageIndex = 0;
         }
 
         [RelayCommand]
         private void ShowSettings()
         {
-            IsDashboardOpen = false;
-            IsSettingsOpen = true;
+            CurrentPageIndex = 1;
         }
 
         [RelayCommand]
         private void ShowPhone()
         {
-            // TODO: later implement phone view
+            CurrentPageIndex = 2;
         }
 
         [RelayCommand]
         private void ShowMaps()
         {
-            // TODO: later implement maps view
+            // Map is now a sub-page of Dashboard.
+            // Add new page index if maps becomes an
+            // independent page in the future.
+            CurrentPageIndex = 0;
         }
     }
 }
