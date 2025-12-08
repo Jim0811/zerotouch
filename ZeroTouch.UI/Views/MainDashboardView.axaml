@@ -232,6 +232,26 @@
             <Setter Property="ScaleTransform.ScaleY" Value="0.85"/>
         </Style>
 
+        <Style Selector="Border.keypad-anim[IsVisible=true]">
+            <Style.Animations>
+                <Animation Duration="0:0:0.75" Easing="CubicEaseOut" FillMode="Forward" IterationCount="1">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.8"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.8"/>
+                        <Setter Property="TranslateTransform.Y" Value="50"/>
+                    </KeyFrame>
+                    
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1"/>
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.8"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.8"/>
+                        <Setter Property="TranslateTransform.Y" Value="0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
     </UserControl.Styles>
 
     <Viewbox Stretch="Uniform" StretchDirection="Both">
@@ -1277,13 +1297,11 @@
                                         Background="#CC000000"
                                         CornerRadius="25">
 
-                                    <Border.Transitions>
-                                        <Transitions>
-                                            <DoubleTransition Property="Opacity" Duration="0:0:0.2"/>
-                                        </Transitions>
-                                    </Border.Transitions>
-
-                                    <Border Background="#1E1E1E"
+                                    <Border Classes="keypad-anim"
+                                            IsVisible="{Binding IsKeypadVisible}"
+                                            Opacity="0"
+                                            RenderTransformOrigin="50%,50%"
+                                            Background="#1E1E1E"
                                             CornerRadius="25"
                                             Padding="20"
                                             HorizontalAlignment="Right"
@@ -1293,19 +1311,19 @@
 
                                         <Border.RenderTransform>
                                             <TransformGroup>
-                                                <ScaleTransform ScaleX="0.75" ScaleY="0.75"/>
-
-                                                <TranslateTransform X="50" Y="50"/>
+                                                <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                                <TranslateTransform X="20" Y="50"/>
                                             </TransformGroup>
                                         </Border.RenderTransform>
                                         
-                                        <Border.RenderTransformOrigin>1, 1</Border.RenderTransformOrigin>
-
                                         <Grid RowDefinitions="Auto,Auto">
 
                                             <StackPanel Grid.Row="0" Spacing="15">
-                                                <TextBlock Text="Keypad" Foreground="#888888" HorizontalAlignment="Center"/>
-
+                                                
+                                                <TextBlock Text="Keypad"
+                                                           Foreground="#888888"
+                                                           HorizontalAlignment="Center"/>
+                                                
                                                 <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*">
                                                     <Button Classes="keypad-btn" Grid.Row="0" Grid.Column="0" Content="1" Command="{Binding DtmfTapCommand}" CommandParameter="1"/>
                                                     <Button Classes="keypad-btn" Grid.Row="0" Grid.Column="1" Content="2" Command="{Binding DtmfTapCommand}" CommandParameter="2"/>
@@ -1325,7 +1343,8 @@
                                                 </Grid>
                                             </StackPanel>
 
-                                            <Button Grid.Row="1"
+                                            <Button Classes="dock-btn"
+                                                    Grid.Row="1"
                                                     Margin="0,20,0,0"
                                                     Width="50" Height="50"
                                                     CornerRadius="25"
@@ -1334,7 +1353,6 @@
                                                     Command="{Binding ToggleKeypadCommand}">
                                                 
                                                 <TextBlock Text="✕"
-                                                           Classes="dock-btn"
                                                            Foreground="White"
                                                            FontSize="20"
                                                            VerticalAlignment="Center"
