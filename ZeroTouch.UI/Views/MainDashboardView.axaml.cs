@@ -33,7 +33,7 @@ namespace ZeroTouch.UI.Views
 
         private MemoryLayer? _routeLayer;
         private MemoryLayer? _vehicleLayer;
-        
+
         private MapControl? _mapControl;
 
         private double _currentVehicleAngle = 0;
@@ -87,10 +87,11 @@ namespace ZeroTouch.UI.Views
 
             map.Layers.Add(new TileLayer(urlFormatter));
 
+
             var lonLats = new[]
             {
                 // start point
-                (120.28471712200883, 22.73226013221393),
+                (120.2846128114305, 22.732236533422288),
 
                 (120.29053110655967, 22.73249458710715),
                 (120.29239839952325, 22.732232361349443),
@@ -105,6 +106,24 @@ namespace ZeroTouch.UI.Views
                 // destination
                 (120.29775246573561, 22.723400189901515)
             };
+            // var lonLats = new[]
+            // {
+            //     // start point
+            //     (120.28471712200883, 22.73226013221393),
+
+            //     (120.29053110655967, 22.73249458710715),
+            //     (120.29239839952325, 22.732232361349443),
+            //     (120.29172547199514, 22.727218383170385),
+
+            //     (120.29532144100894, 22.72667258631913),
+            //     (120.29591697595505, 22.72637869480983),
+            //     (120.29629763948877, 22.72595883940386),
+
+            //     (120.29661829404742, 22.725467958231206),
+
+            //     // destination
+            //     (120.29775246573561, 22.723400189901515)
+            // };
 
             var originalWaypoints = new List<MPoint>();
 
@@ -169,7 +188,7 @@ namespace ZeroTouch.UI.Views
 
             // add the last waypoint
             result.Add(waypoints.Last());
-            
+
             return result;
         }
 
