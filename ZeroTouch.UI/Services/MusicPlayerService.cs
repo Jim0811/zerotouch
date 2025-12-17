@@ -24,14 +24,14 @@ namespace ZeroTouch.UI.Services
 
         public MusicPlayerService()
         {
-            if (Design.IsDesignMode)
-                return;
+            if (Design.IsDesignMode) return;
             
             try
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
-                    Console.WriteLine("Mac OS X detected, skipped.");
+                    Console.WriteLine("[MusicPlayerService] LibVLC initialization skipped: " +
+                                      "macOS Apple Silicon (Arm64) architecture compatibility workaround active.");
                     return;
                 }
 
@@ -53,10 +53,26 @@ namespace ZeroTouch.UI.Services
                 {
                     PositionChanged?.Invoke(_mediaPlayer.Time, _mediaPlayer.Length);
                 };
+                
+                Console.WriteLine("[MusicPlayerService] LibVLC initialized successfully.");
+            }
+            catch (VLCException vlcEx)
+            {
+                // Specifically catch VLC-related native issues
+                Console.WriteLine($"[MusicPlayerService] Native VLC Error: {vlcEx.Message}");
+                if (vlcEx.InnerException != null)
+                    Console.WriteLine($"[MusicPlayerService] Inner Detail: {vlcEx.InnerException.Message}");
+    
+                _isVLCAvailable = false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"VLC initialization failed, {ex.Message}");
+                // Catch-all for other managed exceptions
+                Console.WriteLine($"[MusicPlayerService] General Initialization Failed.");
+                Console.WriteLine($"Type: {ex.GetType().Name}");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    
                 _isVLCAvailable = false;
             }
         }
