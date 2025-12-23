@@ -8,8 +8,11 @@ namespace ZeroTouch.UI.ViewModels
 {
     public partial class GestureDebugViewModel : ViewModelBase
     {
-        private readonly GestureWebSocketClient _wsClient = new();
-
+        public GestureDebugViewModel(AppWebSocketClient ws)
+        {
+            ws.OnMessageReceived += HandleGestureMessage;
+        }
+        
         [ObservableProperty]
         private string _connectionStatus = "Disconnected";
 
@@ -19,18 +22,15 @@ namespace ZeroTouch.UI.ViewModels
         [ObservableProperty]
         private double _confidence = 0.0;
 
-        public GestureDebugViewModel()
-        {
-            _wsClient.OnMessageReceived += HandleGestureMessage;
-        }
-
         private void HandleGestureMessage(string message)
         {
             try
             {
                 var json = JsonDocument.Parse(message);
+                
                 if (json.RootElement.TryGetProperty("gesture", out var g))
                     LastGesture = g.GetString() ?? "unknown";
+                
                 if (json.RootElement.TryGetProperty("confidence", out var c))
                     Confidence = c.GetDouble();
             }
@@ -41,17 +41,17 @@ namespace ZeroTouch.UI.ViewModels
         }
 
         [RelayCommand]
-        public async Task ConnectToBackendAsync()
+        public async Task ConnectToBackendAsync(AppWebSocketClient ws)
         {
             ConnectionStatus = "Connecting...";
-            await _wsClient.ConnectAsync("ws://localhost:8765");
+            await ws.ConnectAsync("ws://localhost:8765");
             ConnectionStatus = "Connected";
         }
 
         [RelayCommand]
-        public async Task DisconnectAsync()
+        public async Task DisconnectAsync(AppWebSocketClient ws)
         {
-            await _wsClient.DisconnectAsync();
+            await ws.DisconnectAsync();
             ConnectionStatus = "Disconnected";
         }
     }

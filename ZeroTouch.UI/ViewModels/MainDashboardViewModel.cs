@@ -54,13 +54,16 @@ namespace ZeroTouch.UI.ViewModels
         [ObservableProperty] private bool _isKeypadVisible = false;
         [ObservableProperty] private bool _isSpeakerOn = false;
 
-        // 導航指令 (例如 "Turn Right", "Go Straight")
+        // Navigation Info, e.g., "Turn Right", "Go Straight"
         [ObservableProperty] private string _navigationInstruction = "Follow Route";
-        // 導航距離文字 (例如 "in 300 meters")
+        
+        // Navigation distance, e.g. "in 300 meters"
         [ObservableProperty] private string _navigationDistance = "Calculating...";
-        //導航圖示 (預設直行箭頭)
+        
+        // Navigation Icon
         [ObservableProperty]
         private string _navigationIcon = "↑";
+        
         // Settings options
         [ObservableProperty] private bool _isDarkTheme = true;
         [ObservableProperty] private bool _isClockBlinking = true;
@@ -236,28 +239,28 @@ namespace ZeroTouch.UI.ViewModels
         {
             condition ??= "";
 
-            if (condition.Contains("雷"))
+            if (condition.Contains('雷'))
                 return "thunder.gif";
 
-            if (condition.Contains("晴") && condition.Contains("陣雨"))
+            if (condition.Contains('晴') && condition.Contains("陣雨"))
                 return "sunny-isolated-thunderstorms.gif";
 
-            if (condition.Contains("晴") && condition.Contains("雨"))
+            if (condition.Contains('晴') && condition.Contains('雨'))
                 return "sunny-isolated-showers.gif";
 
-            if (condition.Contains("晴"))
+            if (condition.Contains('晴'))
                 return "clear.gif";
 
             if (condition.Contains("陰短暫雨"))
                 return "drizzle.gif";
 
-            if (condition.Contains("局部") && condition.Contains("雨"))
+            if (condition.Contains("局部") && condition.Contains('雨'))
                 return "isolated-showers.gif";
 
             if (condition.Contains("陣雨"))
                 return "rainy.gif";
 
-            if (condition.Contains("陰有雨") || condition.Contains("雨"))
+            if (condition.Contains("陰有雨") || condition.Contains('雨'))
                 return "rainy.gif";
 
             if (condition.Contains("多雲時陰"))
@@ -266,7 +269,7 @@ namespace ZeroTouch.UI.ViewModels
             if (condition.Contains("多雲"))
                 return "cloudy.gif";
 
-            if (condition.Contains("陰"))
+            if (condition.Contains('陰'))
                 return "mostly-cloudy.gif";
 
             return "clear.gif";
