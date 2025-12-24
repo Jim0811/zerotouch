@@ -29,7 +29,7 @@ namespace ZeroTouch.UI.Views
             var currentX = e.GetPosition(this).X;
             var delta = currentX - _startX;
 
-            vm.SlideProgress = Math.Clamp(delta / 300.0, 0.0, 1.0);
+            vm.SlideProgress = Math.Clamp(delta / 356.0, 0.0, 1.0);
         }
 
         private void OnSliderReleased(object? sender, PointerReleasedEventArgs e)

@@ -104,23 +104,33 @@
                                 <Grid>
                                     <!-- Slide progress fill -->
                                     <Border
+                                        HorizontalAlignment="Left"
                                         Background="#66FFFFFF"
                                         CornerRadius="32"
                                         Width="{Binding SlideProgress,
                                         Converter={StaticResource SlideToWidthConverter},
-                                        ConverterParameter=420}" />
+                                        ConverterParameter=408}" />
 
                                     <!-- Slider knob -->
                                     <Border
                                         Width="52"
                                         Height="52"
-                                        CornerRadius="26"
+                                        CornerRadius="32"
+                                        ClipToBounds="True"
                                         Background="White"
                                         HorizontalAlignment="Left"
                                         RenderTransformOrigin="0.5,0.5"
                                         PointerPressed="OnSliderPressed"
                                         PointerMoved="OnSliderMoved"
-                                        PointerReleased="OnSliderReleased" />
+                                        PointerReleased="OnSliderReleased">
+
+                                        <Border.RenderTransform>
+                                            <TranslateTransform
+                                                X="{Binding SlideProgress, 
+                                                    Converter={StaticResource SlideToWidthConverter}, 
+                                                    ConverterParameter=356}" />
+                                        </Border.RenderTransform>
+                                    </Border>
                                 </Grid>
                             </Border>
                         </StackPanel>
