@@ -1,13 +1,17 @@
+using Avalonia;
+using Avalonia.Controls;
 using LibVLCSharp.Shared;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ZeroTouch.UI.Services
 {
     public class MusicPlayerService : IDisposable
     {
-        private readonly LibVLC _libVLC;
-        private readonly MediaPlayer _mediaPlayer;
+        private readonly LibVLC? _libVLC;
+        private readonly MediaPlayer? _mediaPlayer;
+        private bool _isVLCAvailable = false;
 
         private readonly List<string> _playlist = new();
         private int _currentIndex = 0;
@@ -20,24 +24,57 @@ namespace ZeroTouch.UI.Services
 
         public MusicPlayerService()
         {
-            var libVlcOptions = new[]
+            if (Design.IsDesignMode) return;
+            
+            try
             {
-                "--no-video",
-                "--no-video-title-show",
-                "--no-spu",
-                "--file-caching=1000",
-                "--audio-resampler=soxr",
-                "--avcodec-threads=4",
-                "--aout=wasapi"
-            };
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Console.WriteLine("[MusicPlayerService] LibVLC initialization skipped: " +
+                                      "macOS Apple Silicon (Arm64) architecture compatibility workaround active.");
+                    return;
+                }
 
-            _libVLC = new LibVLC(libVlcOptions);
-            _mediaPlayer = new MediaPlayer(_libVLC);
+                var libVlcOptions = new[]
+                {
+                    "--no-video",
+                    "--no-video-title-show",
+                    "--no-spu",
+                    "--file-caching=1000",
+                    "--audio-resampler=soxr",
+                    "--avcodec-threads=4",
+                    "--aout=wasapi"
+                };
+                _libVLC = new LibVLC(libVlcOptions);
+                _mediaPlayer = new MediaPlayer(_libVLC);
+                _isVLCAvailable = true;
 
-            _mediaPlayer.TimeChanged += (sender, e) =>
+                _mediaPlayer.TimeChanged += (sender, e) =>
+                {
+                    PositionChanged?.Invoke(_mediaPlayer.Time, _mediaPlayer.Length);
+                };
+                
+                Console.WriteLine("[MusicPlayerService] LibVLC initialized successfully.");
+            }
+            catch (VLCException vlcEx)
             {
-                PositionChanged?.Invoke(_mediaPlayer.Time, _mediaPlayer.Length);
-            };
+                // Specifically catch VLC-related native issues
+                Console.WriteLine($"[MusicPlayerService] Native VLC Error: {vlcEx.Message}");
+                if (vlcEx.InnerException != null)
+                    Console.WriteLine($"[MusicPlayerService] Inner Detail: {vlcEx.InnerException.Message}");
+    
+                _isVLCAvailable = false;
+            }
+            catch (Exception ex)
+            {
+                // Catch-all for other managed exceptions
+                Console.WriteLine($"[MusicPlayerService] General Initialization Failed.");
+                Console.WriteLine($"Type: {ex.GetType().Name}");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    
+                _isVLCAvailable = false;
+            }
         }
 
         public void SetPlaylist(IEnumerable<string> songs)

@@ -1,9 +1,11 @@
-using System.Linq;
+using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using System.Linq;
+using System.Runtime.InteropServices;
 using LibVLCSharp.Shared;
 using ZeroTouch.UI.ViewModels;
 using ZeroTouch.UI.Views;
@@ -14,7 +16,27 @@ namespace ZeroTouch.UI
     {
         public override void Initialize()
         {
-            Core.Initialize();
+            if (!Design.IsDesignMode)
+            {
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    // Only initialize the LibVLC core on non-macOS platforms.
+                    try
+                    {
+                        Core.Initialize();
+                    }
+                    catch (Exception ex) 
+                    { 
+                        // Log the error but allow the application to proceed without media features.
+                        System.Diagnostics.Debug.WriteLine($"LibVLC initialization failed: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    // Fallback for macOS: The application will run, but MusicPlayerService will be disabled.
+                    System.Diagnostics.Debug.WriteLine("Running on macOS: LibVLC initialization skipped (Architecture Incompatibility).");
+                }
+            }
             AvaloniaXamlLoader.Load(this);
         }
 

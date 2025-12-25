@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input;
 using ZeroTouch.UI.ViewModels;
 
@@ -10,18 +12,70 @@ namespace ZeroTouch.UI.Views
         {
             InitializeComponent();
 
-            // listen for key events
+            // Listen for key events
             this.KeyDown += OnKeyDown;
         }
 
-        private void OnKeyDown(object? sender, KeyEventArgs e)
+        protected override async void OnClosing(WindowClosingEventArgs e)
         {
             if (DataContext is MainWindowViewModel vm)
             {
-                if (e.Key == Key.F2)
-                {
+                await vm.OnAppClosingAsync();
+            }
+
+            base.OnClosing(e);
+        }
+
+        private async void OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            _ = HandleKeyAsync(e);
+    
+            if (DataContext is not MainWindowViewModel vm)
+                return;
+
+            switch (e.Key)
+            {
+                case Key.Up:
+                    vm.ActiveFocusGroup = vm.DockFocusGroup;
+                    vm.DockFocusGroup.Move(-1);
+                    break;
+
+                case Key.Down:
+                    vm.ActiveFocusGroup = vm.DockFocusGroup;
+                    vm.DockFocusGroup.Move(+1);
+                    break;
+                
+                case Key.Left:
+                    vm.ActiveFocusGroup = vm.MusicFocusGroup;
+                    vm.MusicFocusGroup.Move(-1);
+                    break;
+
+                case Key.Right:
+                    vm.ActiveFocusGroup = vm.MusicFocusGroup;
+                    vm.MusicFocusGroup.Move(+1);
+                    break;
+                
+                case Key.Enter:
+                case Key.Space:
+                    vm.ActiveFocusGroup?.Activate();
+                    break;
+            }
+        }
+
+        private async Task HandleKeyAsync(KeyEventArgs e)
+        {
+            if (DataContext is not MainWindowViewModel vm)
+                return;
+
+            switch (e.Key)
+            {
+                case Key.F2:
                     vm.ToggleDebugMode();
-                }
+                    break;
+
+                case Key.F3:
+                    await vm.SendCommand("set_driver_debug", true);
+                    break;
             }
         }
     }
