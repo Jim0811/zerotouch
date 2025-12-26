@@ -11,39 +11,37 @@ namespace ZeroTouch.UI.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        private object _currentView;
-        
-        [ObservableProperty]
-        private FocusGroup _activeFocusGroup;
-        
+        [ObservableProperty] private object _currentView;
+
+        [ObservableProperty] private FocusGroup _activeFocusGroup;
+
         public FocusGroup DockFocusGroup { get; }
         public FocusGroup MusicFocusGroup { get; }
-        
+
         private readonly AppWebSocketClient _wsClient;
-        
+
         private readonly MainDashboardViewModel _dashboardViewModel;
         private readonly GestureDebugViewModel _debugViewModel;
-        
+
         public DriverStateViewModel DriverStateVm { get; }
 
         public MainWindowViewModel()
         {
             _wsClient = new AppWebSocketClient();
-            
+
             _dashboardViewModel = new MainDashboardViewModel();
             _debugViewModel = new GestureDebugViewModel(_wsClient);
-            
+
             CurrentView = _dashboardViewModel; // Dashboard by default
-            
+
             DriverStateVm = new DriverStateViewModel(_wsClient);
-            
+
             _ = _wsClient.ConnectAsync("ws://localhost:8765");
-            
+
             _wsClient.OnMessageReceived += OnWsMessage;
-            
+
             ActiveFocusGroup = DockFocusGroup;
-            
+
             DockFocusGroup = new FocusGroup([
                 new FocusItemViewModel(_dashboardViewModel.ShowHomeCommand),
                 new FocusItemViewModel(_dashboardViewModel.ShowPhoneCommand),
@@ -57,7 +55,7 @@ namespace ZeroTouch.UI.ViewModels
                 new FocusItemViewModel(_dashboardViewModel.NextCommand)
             ]);
         }
-        
+
         private void OnWsMessage(string json)
         {
             Dispatcher.UIThread.Post(() =>
@@ -66,7 +64,7 @@ namespace ZeroTouch.UI.ViewModels
                 Console.WriteLine("[UI RECV] " + json);
             });
         }
-        
+
         public async Task SendCommand(string cmd, bool value)
         {
             var msg = new
@@ -100,7 +98,7 @@ namespace ZeroTouch.UI.ViewModels
                 CurrentView = _dashboardViewModel;
             }
         }
-        
+
         public async Task OnAppClosingAsync()
         {
             await SendCommand("set_gesture_debug", false);

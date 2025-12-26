@@ -39,9 +39,9 @@ namespace ZeroTouch.UI.Views
         private MapControl? _mapControl;
 
         private double _currentVehicleAngle = 0;
-        
+
         private MemoryLayer? _destinationLayer;
-        private Border? _selectedRouteBorder; 
+        private Border? _selectedRouteBorder;
 
         public MainDashboardView()
         {
@@ -95,39 +95,41 @@ namespace ZeroTouch.UI.Views
             );
 
             map.Layers.Add(new TileLayer(urlFormatter));
-            
+
             _routeLayer = new MemoryLayer { Name = "RouteLayer" };
             _vehicleLayer = CreateVehicleLayer();
             _destinationLayer = new MemoryLayer { Name = "DestinationLayer" };
-            
+
             map.Layers.Add(_routeLayer);
             map.Layers.Add(_destinationLayer);
             map.Layers.Add(_vehicleLayer);
-            
-            while (map.Widgets.TryDequeue(out _)) { }
+
+            while (map.Widgets.TryDequeue(out _))
+            {
+            }
 
             _mapControl.Map = map;
-            
+
             _mapControl.Loaded += (s, e) =>
             {
-                double startLon = 120.2846; 
+                double startLon = 120.2846;
                 double startLat = 22.7322;
-                
+
                 var p = SphericalMercator.FromLonLat(startLon, startLat);
                 var startPoint = new MPoint(p.x, p.y);
-                
+
                 if (_mapControl?.Map?.Navigator != null)
                 {
                     _mapControl.Map.Navigator.CenterOn(startPoint);
                     _mapControl.Map.Navigator.ZoomTo(2.0);
                 }
-                
+
                 PreviewRoute("Home");
-                
+
                 _navigationTimer?.Stop();
             };
         }
-        
+
         private List<MPoint> GetRoutePoints(string routeIdentifier)
         {
             string fileName;
@@ -139,7 +141,7 @@ namespace ZeroTouch.UI.Views
                     if (routeIdentifier.StartsWith("route"))
                         fileName = routeIdentifier.EndsWith(".json") ? routeIdentifier : $"{routeIdentifier}.json";
                     else
-                        fileName = $"route-{routeIdentifier}.json"; 
+                        fileName = $"route-{routeIdentifier}.json";
                     break;
             }
 
@@ -157,7 +159,7 @@ namespace ZeroTouch.UI.Views
                     {
                         foreach (var element in doc.RootElement.EnumerateArray())
                         {
-                            if (element.TryGetProperty("lon", out var lonProp) && 
+                            if (element.TryGetProperty("lon", out var lonProp) &&
                                 element.TryGetProperty("lat", out var latProp))
                             {
                                 var p = SphericalMercator.FromLonLat(lonProp.GetDouble(), latProp.GetDouble());
@@ -171,69 +173,71 @@ namespace ZeroTouch.UI.Views
             {
                 Console.WriteLine($"[Error] Failed to load route: {ex.Message}");
             }
+
             return points;
         }
-        
+
         private void PreviewRoute(string routeIdentifier)
         {
             var originalWaypoints = GetRoutePoints(routeIdentifier);
             if (originalWaypoints.Count < 2) return;
 
             var previewPath = InterpolatePath(originalWaypoints, stepSize: 1.2);
-            
+
             var previewMapControl = this.FindControl<MapControl>("MapViewMapControl");
             if (previewMapControl?.Map == null) return;
-            
+
             previewMapControl.Map.Layers.Clear();
-            
+
             previewMapControl.Map.Layers.Add(new TileLayer(new HttpTileSource(
                 new BruTile.Predefined.GlobalSphericalMercator(),
                 "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
                 new[] { "a", "b", "c", "d" },
                 name: "CartoDB Voyager")));
-            
+
             var routeLayer = CreateRouteLayer(previewPath);
             previewMapControl.Map.Layers.Add(routeLayer);
             previewMapControl.Map.Layers.Add(CreateDestinationLayer(previewPath.Last()));
-            
+
             if (routeLayer.Extent != null)
             {
-                previewMapControl.Map.Navigator.ZoomToBox(routeLayer.Extent.Grow(200)); 
+                previewMapControl.Map.Navigator.ZoomToBox(routeLayer.Extent.Grow(200));
             }
-            
+
             previewMapControl.RefreshGraphics();
         }
-        
+
         private void StartNavigation(string routeIdentifier)
         {
             _navigationTimer?.Stop();
 
             var originalWaypoints = GetRoutePoints(routeIdentifier);
             if (originalWaypoints.Count < 2) return;
-            
+
             _interpolatedPath = InterpolatePath(originalWaypoints, stepSize: 1.2);
             _currentStepIndex = 0;
             _currentVehicleAngle = 0;
-            
+
             if (_routeLayer != null)
             {
                 var newRouteLayer = CreateRouteLayer(_interpolatedPath);
                 _routeLayer.Features = newRouteLayer.Features;
                 _routeLayer.DataHasChanged();
             }
+
             if (_destinationLayer != null)
             {
                 var newDestLayer = CreateDestinationLayer(_interpolatedPath.Last());
                 _destinationLayer.Features = newDestLayer.Features;
                 _destinationLayer.DataHasChanged();
             }
-            
+
             if (_mapControl?.Map?.Navigator != null)
             {
                 _mapControl.Map.Navigator.CenterOn(_interpolatedPath[0]);
                 _mapControl.Map.Navigator.ZoomTo(2.0);
             }
-            
+
             StartNavigationSimulation();
 
             if (DataContext is MainDashboardViewModel vm)
@@ -241,7 +245,7 @@ namespace ZeroTouch.UI.Views
                 vm.CurrentPageIndex = 1;
             }
         }
-        
+
         private void OnRoutePreviewPointerEntered(object? sender, PointerEventArgs e)
         {
             if (sender is Control control && control.Tag is string routeName)
@@ -257,7 +261,7 @@ namespace ZeroTouch.UI.Views
                 StartNavigation(routeName);
             }
         }
-        
+
         private void OnRouteBlockClicked(object? sender, PointerPressedEventArgs e)
         {
             if (sender is Border clickedBorder && clickedBorder.Tag is string routeName)
@@ -265,9 +269,9 @@ namespace ZeroTouch.UI.Views
                 if (_selectedRouteBorder != null)
                 {
                     _selectedRouteBorder.Background = Avalonia.Media.SolidColorBrush.Parse("#252525");
-                    
+
                     _selectedRouteBorder.BorderBrush = Avalonia.Media.Brushes.Transparent;
-                    
+
                     _selectedRouteBorder.BorderThickness = new Thickness(0);
                 }
 
@@ -275,7 +279,7 @@ namespace ZeroTouch.UI.Views
                 _selectedRouteBorder.Background = Avalonia.Media.SolidColorBrush.Parse("#383838");
                 _selectedRouteBorder.BorderBrush = Avalonia.Media.SolidColorBrush.Parse("#2ECC71");
                 _selectedRouteBorder.BorderThickness = new Thickness(2);
-                
+
                 PreviewRoute(routeName);
             }
         }
@@ -380,7 +384,7 @@ namespace ZeroTouch.UI.Views
 
                 if (_currentStepIndex >= _interpolatedPath.Count)
                 {
-                    _currentStepIndex = 1;  // Loop back to start
+                    _currentStepIndex = 1; // Loop back to start
                     currentSmoothRotation = 0;
                     _currentVehicleAngle = 0;
                     _mapControl.Map.Navigator.RotateTo(0, duration: 0);
@@ -472,13 +476,13 @@ namespace ZeroTouch.UI.Views
 
                 // Rotate the map slightly for effect
                 // _mapControl.Map.Navigator.RotateTo(_mapControl.Map.Navigator.Viewport.Rotation + 0.01);
-                
+
                 if (DataContext is MainDashboardViewModel vm)
                 {
                     double distToTurn = GetDistanceToNextTurn(_currentStepIndex);
                     double distToDest = CalculateRemainingDistance(_currentStepIndex);
-                    
-                    if (distToDest < 30) 
+
+                    if (distToDest < 30)
                     {
                         vm.NavigationDistance = "Arriving";
                         vm.NavigationInstruction = "Destination";
@@ -490,13 +494,15 @@ namespace ZeroTouch.UI.Views
                             vm.NavigationDistance = $"in {(distToTurn / 1000.0):F1} km";
                         else
                             vm.NavigationDistance = $"in {(int)distToTurn} m";
-                        
-                        UpdateTurnInstruction(vm); 
-                        
-                        if (vm.NavigationIcon == "↑") {}
+
+                        UpdateTurnInstruction(vm);
+
+                        if (vm.NavigationIcon == "↑")
+                        {
+                        }
                     }
                 }
-                
+
                 _mapControl.RefreshGraphics();
             };
 
@@ -552,7 +558,9 @@ namespace ZeroTouch.UI.Views
                 if (mapViewMapControl != null)
                 {
                     var map = new Map();
-                    map.Layers.Add(new TileLayer(new HttpTileSource(new BruTile.Predefined.GlobalSphericalMercator(), "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png", new[] { "a", "b", "c", "d" }, name: "CartoDB Voyager")));
+                    map.Layers.Add(new TileLayer(new HttpTileSource(new BruTile.Predefined.GlobalSphericalMercator(),
+                        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png",
+                        new[] { "a", "b", "c", "d" }, name: "CartoDB Voyager")));
 
                     (double, double)[] lonLats;
                     var routeUri = new Uri("avares://ZeroTouch.UI/Assets/Routes/route-1.json");
@@ -575,7 +583,7 @@ namespace ZeroTouch.UI.Views
                         // Fallback to hardcoded data if file not found in designer
                         lonLats = new[]
                         {
-                            (0.0,0.0)
+                            (0.0, 0.0)
                         };
                     }
 
@@ -625,42 +633,42 @@ namespace ZeroTouch.UI.Views
 
             return current + diff * t;
         }
-        
+
         private double CalculateRemainingDistance(int currentIndex)
         {
             double totalDistance = 0;
-            
+
             for (int i = currentIndex; i < _interpolatedPath.Count - 1; i++)
             {
                 totalDistance += _interpolatedPath[i].Distance(_interpolatedPath[i + 1]);
             }
-            
+
             return totalDistance;
         }
-        
+
         private void UpdateTurnInstruction(MainDashboardViewModel vm)
         {
-            int lookAheadSteps = 80; 
-            
+            int lookAheadSteps = 80;
+
             if (_currentStepIndex + lookAheadSteps + 1 >= _interpolatedPath.Count)
             {
                 vm.NavigationInstruction = "Arriving";
                 vm.NavigationIcon = "●";
                 return;
             }
-            
+
             var pNow = _interpolatedPath[_currentStepIndex];
             var pNext = _interpolatedPath[_currentStepIndex + 1];
             double dx1 = pNext.X - pNow.X;
             double dy1 = pNext.Y - pNow.Y;
             double angleCurrent = Math.Atan2(dy1, dx1);
-            
+
             var pFuture = _interpolatedPath[_currentStepIndex + lookAheadSteps];
             var pFutureNext = _interpolatedPath[_currentStepIndex + lookAheadSteps + 1];
             double dx2 = pFutureNext.X - pFuture.X;
             double dy2 = pFutureNext.Y - pFuture.Y;
             double angleFuture = Math.Atan2(dy2, dx2);
-            
+
             double diff = angleFuture - angleCurrent;
             while (diff > Math.PI) diff -= 2 * Math.PI;
             while (diff < -Math.PI) diff += 2 * Math.PI;
@@ -683,37 +691,37 @@ namespace ZeroTouch.UI.Views
                 vm.NavigationIcon = "↑";
             }
         }
-        
+
         private double GetDistanceToNextTurn(int currentIndex)
         {
             if (currentIndex >= _interpolatedPath.Count - 1) return 0;
 
             double accumulatedDistance = 0;
-            
+
             var pCurrent = _interpolatedPath[currentIndex];
             var pNext = _interpolatedPath[currentIndex + 1];
             double baseAngle = Math.Atan2(pNext.Y - pCurrent.Y, pNext.X - pCurrent.X);
-            
+
             for (int i = currentIndex; i < _interpolatedPath.Count - 1; i++)
             {
                 var p1 = _interpolatedPath[i];
                 var p2 = _interpolatedPath[i + 1];
-                
+
                 double segmentDist = p1.Distance(p2);
                 accumulatedDistance += segmentDist;
-                
+
                 double scanAngle = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
-                
+
                 double diff = scanAngle - baseAngle;
                 while (diff > Math.PI) diff -= 2 * Math.PI;
                 while (diff < -Math.PI) diff += 2 * Math.PI;
-                
+
                 if (Math.Abs(diff) > 0.43)
                 {
                     return accumulatedDistance;
                 }
             }
-            
+
             return accumulatedDistance;
         }
     }

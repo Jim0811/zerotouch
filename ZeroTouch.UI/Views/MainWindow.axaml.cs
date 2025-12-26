@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ZeroTouch.UI.ViewModels;
@@ -29,7 +28,7 @@ namespace ZeroTouch.UI.Views
         private async void OnKeyDown(object? sender, KeyEventArgs e)
         {
             _ = HandleKeyAsync(e);
-    
+
             if (DataContext is not MainWindowViewModel vm)
                 return;
 
@@ -44,7 +43,7 @@ namespace ZeroTouch.UI.Views
                     vm.ActiveFocusGroup = vm.DockFocusGroup;
                     vm.DockFocusGroup.Move(+1);
                     break;
-                
+
                 case Key.Left:
                     vm.ActiveFocusGroup = vm.MusicFocusGroup;
                     vm.MusicFocusGroup.Move(-1);
@@ -54,7 +53,7 @@ namespace ZeroTouch.UI.Views
                     vm.ActiveFocusGroup = vm.MusicFocusGroup;
                     vm.MusicFocusGroup.Move(+1);
                     break;
-                
+
                 case Key.Enter:
                 case Key.Space:
                     vm.ActiveFocusGroup?.Activate();

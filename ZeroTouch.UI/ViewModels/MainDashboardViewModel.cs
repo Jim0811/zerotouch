@@ -56,14 +56,13 @@ namespace ZeroTouch.UI.ViewModels
 
         // Navigation Info, e.g., "Turn Right", "Go Straight"
         [ObservableProperty] private string _navigationInstruction = "Follow Route";
-        
+
         // Navigation distance, e.g. "in 300 meters"
         [ObservableProperty] private string _navigationDistance = "Calculating...";
-        
+
         // Navigation Icon
-        [ObservableProperty]
-        private string _navigationIcon = "↑";
-        
+        [ObservableProperty] private string _navigationIcon = "↑";
+
         // Settings options
         [ObservableProperty] private bool _isDarkTheme = true;
         [ObservableProperty] private bool _isClockBlinking = true;
@@ -214,7 +213,6 @@ namespace ZeroTouch.UI.ViewModels
             {
                 TemperatureBarBrush = new SolidColorBrush(Colors.Orange);
             }
-
         }
 
         private string GetIconPath(string condition)
@@ -343,12 +341,12 @@ namespace ZeroTouch.UI.ViewModels
             {
                 StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
                 EndPoint = new RelativePoint(1, 0, RelativeUnit.Relative),
-                GradientStops = new GradientStops
-        {
-            new GradientStop(leftColor,   0.0),
-            new GradientStop(middleColor,0.5),
-            new GradientStop(rightColor,  1.0),
-        }
+                GradientStops =
+                [
+                    new GradientStop(leftColor, 0.0),
+                    new GradientStop(middleColor, 0.5),
+                    new GradientStop(rightColor, 1.0)
+                ]
             };
         }
 

@@ -4,15 +4,14 @@ using System.Windows.Input;
 
 namespace ZeroTouch.UI.Navigation
 {
-    public partial class FocusItemViewModel 
+    public partial class FocusItemViewModel
         : ObservableObject, IFocusableItem
     {
         public ICommand Command { get; }
-        
+
         private readonly Action<FocusItemViewModel>? _onActivated;
 
-        [ObservableProperty]
-        private bool _isSelected;
+        [ObservableProperty] private bool _isSelected;
 
         public FocusItemViewModel(ICommand command, Action<FocusItemViewModel>? onActivated = null)
         {
@@ -23,7 +22,7 @@ namespace ZeroTouch.UI.Navigation
         public void Activate()
         {
             _onActivated?.Invoke(this);
-            
+
             if (Command?.CanExecute(null) == true)
                 Command.Execute(null);
         }
