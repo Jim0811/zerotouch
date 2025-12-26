@@ -265,6 +265,8 @@
         </Style>
 
         <Style Selector="Button.dock-btn[Tag=True]">
+            <Setter Property="Background" Value="#202020" />
+            
             <Setter Property="RenderTransform">
                 <ScaleTransform ScaleX="1.1" ScaleY="1.1" />
             </Setter>
