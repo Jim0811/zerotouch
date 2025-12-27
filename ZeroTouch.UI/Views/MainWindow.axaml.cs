@@ -32,26 +32,64 @@ namespace ZeroTouch.UI.Views
             if (DataContext is not MainWindowViewModel vm)
                 return;
 
+            var dashboardVm = vm.CurrentView as MainDashboardViewModel;
+            
+            bool isMapPage = dashboardVm?.CurrentPageIndex == 3;
+            
             switch (e.Key)
             {
                 case Key.Up:
-                    vm.ActiveFocusGroup = vm.DockFocusGroup;
-                    vm.DockFocusGroup.Move(-1);
+                    if (vm.ActiveFocusGroup == dashboardVm?.RouteFocusGroup)
+                    {
+                        dashboardVm.RouteFocusGroup.Move(-1);
+                    }
+                    else
+                    {
+                        vm.ActiveFocusGroup = vm.DockFocusGroup;
+                        vm.DockFocusGroup.Move(-1);
+                    }
                     break;
 
                 case Key.Down:
-                    vm.ActiveFocusGroup = vm.DockFocusGroup;
-                    vm.DockFocusGroup.Move(+1);
+                    if (vm.ActiveFocusGroup == dashboardVm?.RouteFocusGroup)
+                    {
+                        dashboardVm.RouteFocusGroup.Move(+1);
+                    }
+                    else
+                    {
+                        vm.ActiveFocusGroup = vm.DockFocusGroup;
+                        vm.DockFocusGroup.Move(+1);
+                    }
                     break;
 
                 case Key.Left:
-                    vm.ActiveFocusGroup = vm.MusicFocusGroup;
-                    vm.MusicFocusGroup.Move(-1);
+                    if (isMapPage)
+                    {
+                        if (vm.ActiveFocusGroup == dashboardVm?.RouteFocusGroup)
+                        {
+                            vm.ActiveFocusGroup = vm.DockFocusGroup;
+                        }
+                    }
+                    else
+                    {
+                        vm.ActiveFocusGroup = vm.MusicFocusGroup;
+                        vm.MusicFocusGroup.Move(-1);
+                    }
                     break;
 
                 case Key.Right:
-                    vm.ActiveFocusGroup = vm.MusicFocusGroup;
-                    vm.MusicFocusGroup.Move(+1);
+                    if (isMapPage)
+                    {
+                        if (vm.ActiveFocusGroup == vm.DockFocusGroup)
+                        {
+                            vm.ActiveFocusGroup = dashboardVm?.RouteFocusGroup;
+                        }
+                    }
+                    else
+                    {
+                        vm.ActiveFocusGroup = vm.MusicFocusGroup;
+                        vm.MusicFocusGroup.Move(+1);
+                    }
                     break;
 
                 case Key.Enter:

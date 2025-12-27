@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Timers;
 using System.Threading.Tasks;
+using ZeroTouch.UI.Navigation;
 using ZeroTouch.UI.Services;
 
 namespace ZeroTouch.UI.ViewModels
@@ -68,6 +69,21 @@ namespace ZeroTouch.UI.ViewModels
         [ObservableProperty] private bool _isClockBlinking = true;
 
         [ObservableProperty] private IPageTransition _currentPageTransition;
+
+        [ObservableProperty] private string _previewRouteId = "";
+        [ObservableProperty] private string _navigationRouteId = "";
+
+        public FocusGroup RouteFocusGroup { get; }
+
+        [RelayCommand]
+        private void GoRoute(string routeName)
+        {
+            NavigationInstruction = $"Navigating to {routeName}...";
+            NavigationDistance = "Calculating...";
+            
+            NavigationRouteId = string.Empty; 
+            NavigationRouteId = routeName;
+        }
 
         private readonly IPageTransition _horizontalTransition = new CompositePageTransition
         {
@@ -140,6 +156,23 @@ namespace ZeroTouch.UI.ViewModels
                 Progress = pos;
                 Duration = dur;
             };
+
+            RouteFocusGroup = new FocusGroup([
+                new FocusItemViewModel(GoRouteCommand, "Home", null, PreviewRoute, true),
+                new FocusItemViewModel(GoRouteCommand, "Work", null, PreviewRoute, true),
+                new FocusItemViewModel(GoRouteCommand, "Gym", null, PreviewRoute, true),
+                new FocusItemViewModel(GoRouteCommand, "School", null, PreviewRoute, true),
+                new FocusItemViewModel(GoRouteCommand, "Cinema", null, PreviewRoute, true)
+            ]);
+        }
+
+        private void PreviewRoute(object? routeNameObj)
+        {
+            if (routeNameObj is string routeName)
+            {
+                PreviewRouteId = routeName;
+                NavigationInstruction = $"Preview: {routeName}"; 
+            }
         }
 
         private void UpdateTime()
