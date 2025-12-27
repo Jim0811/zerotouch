@@ -1420,7 +1420,7 @@
                                                             Width="50"
                                                             Height="50"
                                                             CornerRadius="25"
-                                                            Background="#3498DB">
+                                                            Background="#fcccd9">
 
                                                         <Image
                                                             Source="avares://ZeroTouch.UI/Assets/Icons/Dark/google-maps.png"
@@ -1476,7 +1476,7 @@
                                                             Width="50"
                                                             Height="50"
                                                             CornerRadius="25"
-                                                            Background="#9B59B6">
+                                                            Background="#decffa">
 
                                                         <Image
                                                             Source="avares://ZeroTouch.UI/Assets/Icons/Dark/google-maps.png"
@@ -1531,7 +1531,7 @@
                                                             Width="50"
                                                             Height="50"
                                                             CornerRadius="25"
-                                                            Background="#9B59B6">
+                                                            Background="#decffa">
 
                                                         <Image
                                                             Source="avares://ZeroTouch.UI/Assets/Icons/Dark/google-maps.png"
@@ -1586,7 +1586,7 @@
                                                             Width="50"
                                                             Height="50"
                                                             CornerRadius="25"
-                                                            Background="#9B59B6">
+                                                            Background="#decffa">
 
                                                         <Image
                                                             Source="avares://ZeroTouch.UI/Assets/Icons/Dark/google-maps.png"
@@ -1641,7 +1641,7 @@
                                                             Width="50"
                                                             Height="50"
                                                             CornerRadius="25"
-                                                            Background="#9B59B6">
+                                                            Background="#decffa">
 
                                                         <Image
                                                             Source="avares://ZeroTouch.UI/Assets/Icons/Dark/google-maps.png"
