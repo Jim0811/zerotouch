@@ -1,19 +1,13 @@
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Threading;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform;
-using Avalonia;
 using BruTile.Web;
 using Mapsui;
-using Mapsui.Extensions;
 using Mapsui.Projections;
-using Mapsui.Tiling;
 using Mapsui.Tiling.Layers;
 using Mapsui.UI.Avalonia;
-using Mapsui.Widgets;
-using Mapsui.Widgets.ScaleBar;
 using Mapsui.Layers;
 using Mapsui.Styles;
 using Mapsui.Nts;
@@ -52,7 +46,7 @@ namespace ZeroTouch.UI.Views
             InitializeMapView_ForPreview();
 
             // Runtime initialization is moved to the Loaded event to avoid issues in the designer.
-            this.Loaded += MainDashboardView_Loaded;
+            Loaded += MainDashboardView_Loaded;
 
             var slider = this.FindControl<Slider>("ProgressSlider");
             if (slider != null)
@@ -133,36 +127,15 @@ namespace ZeroTouch.UI.Views
 
         private List<MPoint> GetRoutePoints(string routeIdentifier)
         {
-            string fileName;
-            
-            switch (routeIdentifier)
+            string fileName = routeIdentifier switch
             {
-                case "Home": 
-                    fileName = "route-1.json"; 
-                    break;
-                
-                case "Work": 
-                    fileName = "route-2.json"; 
-                    break;
-                
-                case "Gym":
-                    fileName = "route-3.json"; 
-                    break;
-                
-                case "School":
-                    fileName = "route-4.json"; 
-                    break;
-                
-                case "Cinema":
-                    fileName = "route-5.json"; 
-                    break;
-
-                default:
-                    fileName = routeIdentifier.EndsWith(".json") 
-                        ? routeIdentifier 
-                        : $"{routeIdentifier}.json";
-                    break;
-            }
+                "Home" => "route-1.json",
+                "Work" => "route-2.json",
+                "Gym" => "route-3.json",
+                "School" => "route-4.json",
+                "Cinema" => "route-5.json",
+                _ => routeIdentifier.EndsWith(".json") ? routeIdentifier : $"{routeIdentifier}.json"
+            };
 
             var routeUri = new Uri($"avares://ZeroTouch.UI/Assets/Routes/{fileName}");
             var points = new List<MPoint>();
@@ -174,17 +147,15 @@ namespace ZeroTouch.UI.Views
                     using var stream = AssetLoader.Open(routeUri);
                     using var reader = new System.IO.StreamReader(stream);
                     var jsonContent = reader.ReadToEnd();
-                    using (var doc = System.Text.Json.JsonDocument.Parse(jsonContent))
+                    using var doc = System.Text.Json.JsonDocument.Parse(jsonContent);
+                    
+                    foreach (var element in doc.RootElement.EnumerateArray())
                     {
-                        foreach (var element in doc.RootElement.EnumerateArray())
-                        {
-                            if (element.TryGetProperty("lon", out var lonProp) &&
-                                element.TryGetProperty("lat", out var latProp))
-                            {
-                                var p = SphericalMercator.FromLonLat(lonProp.GetDouble(), latProp.GetDouble());
-                                points.Add(new MPoint(p.x, p.y));
-                            }
-                        }
+                        if (!element.TryGetProperty("lon", out var lonProp) ||
+                            !element.TryGetProperty("lat", out var latProp)) continue;
+                        
+                        var p = SphericalMercator.FromLonLat(lonProp.GetDouble(), latProp.GetDouble());
+                        points.Add(new MPoint(p.x, p.y));
                     }
                 }
             }
@@ -297,7 +268,7 @@ namespace ZeroTouch.UI.Views
             }
         }
 
-        private List<MPoint> InterpolatePath(List<MPoint> waypoints, double stepSize)
+        private List<MPoint> InterpolatePath(List<MPoint>? waypoints, double stepSize)
         {
             var result = new List<MPoint>();
 
@@ -329,7 +300,7 @@ namespace ZeroTouch.UI.Views
             return result;
         }
 
-        private MemoryLayer CreateRouteLayer(List<MPoint> pathPoints)
+        private MemoryLayer CreateRouteLayer(List<MPoint>? pathPoints)
         {
             if (pathPoints == null || pathPoints.Count < 2) return new MemoryLayer { Name = "RouteLayer" };
 
@@ -350,7 +321,7 @@ namespace ZeroTouch.UI.Views
             return new MemoryLayer
             {
                 Name = "RouteLayer",
-                Features = new[] { feature }
+                Features = [feature]
             };
         }
 
@@ -407,18 +378,15 @@ namespace ZeroTouch.UI.Views
 
                 var prevIndex = Math.Max(0, _currentStepIndex - 1);
 
-                if (prevIndex < 0) prevIndex = 0;
-
                 var prevLocation = _interpolatedPath[prevIndex];
 
                 var dx = newLocation.X - prevLocation.X;
                 var dy = newLocation.Y - prevLocation.Y;
-                double angleDeg = 0;
 
                 if (Math.Abs(dx) > 0.0001 || Math.Abs(dy) > 0.0001)
                 {
                     var angleRad = Math.Atan2(dy, dx);
-                    angleDeg = angleRad * 180.0 / Math.PI;
+                    var angleDeg = angleRad * 180.0 / Math.PI;
 
                     var targetRotation = angleDeg - 90;
 
@@ -445,15 +413,15 @@ namespace ZeroTouch.UI.Views
                             Line = new Pen(Color.FromArgb(200, 33, 150, 243), 6)
                         });
 
-                        _routeLayer.Features = new[] { newRouteFeature };
-                        _routeLayer.DataHasChanged();
+                        _routeLayer.Features = [newRouteFeature];
                     }
                     else
                     {
                         // Final point reached, clear the route
                         _routeLayer.Features = new List<IFeature>();
-                        _routeLayer.DataHasChanged();
                     }
+
+                    _routeLayer.DataHasChanged();
                 }
 
                 if (_vehicleLayer != null)
@@ -467,7 +435,7 @@ namespace ZeroTouch.UI.Views
 
                     var oldFeature = _vehicleLayer.Features.FirstOrDefault();
 
-                    if (oldFeature?.Styles.FirstOrDefault() is IStyle oldStyle)
+                    if (oldFeature?.Styles.FirstOrDefault() is { } oldStyle)
                     {
                         newFeature.Styles.Add(oldStyle);
                     }
@@ -522,9 +490,9 @@ namespace ZeroTouch.UI.Views
             _navigationTimer.Start();
         }
 
-        private Polygon CreateArrowPolygon(MPoint center, double angleDegrees)
+        private static Polygon CreateArrowPolygon(MPoint center, double angleDegrees)
         {
-            double scale = 3.0;
+            const double scale = 3.0;
 
             var points = new[]
             {
@@ -535,21 +503,21 @@ namespace ZeroTouch.UI.Views
                 new MPoint(0, 15)
             };
 
-            double rad = (angleDegrees - 90) * Math.PI / 180.0;
-            double cos = Math.Cos(rad);
-            double sin = Math.Sin(rad);
+            var rad = (angleDegrees - 90) * Math.PI / 180.0;
+            var cos = Math.Cos(rad);
+            var sin = Math.Sin(rad);
 
             var rotatedCoordinates = new Coordinate[points.Length];
 
-            for (int i = 0; i < points.Length; i++)
+            for (var i = 0; i < points.Length; i++)
             {
                 var p = points[i];
 
-                double xScaled = p.X * scale;
-                double yScaled = p.Y * scale;
+                var xScaled = p.X * scale;
+                var yScaled = p.Y * scale;
 
-                double xRot = (xScaled * cos) - (yScaled * sin);
-                double yRot = (xScaled * sin) + (yScaled * cos);
+                var xRot = (xScaled * cos) - (yScaled * sin);
+                var yRot = (xScaled * sin) + (yScaled * cos);
 
                 rotatedCoordinates[i] = new Coordinate(center.X + xRot, center.Y + yRot);
             }
@@ -613,10 +581,10 @@ namespace ZeroTouch.UI.Views
                     else
                     {
                         // Fallback to hardcoded data if file not found in designer
-                        lonLats = new[]
-                        {
+                        lonLats =
+                        [
                             (0.0, 0.0)
-                        };
+                        ];
                     }
 
                     var originalWaypoints = new List<MPoint>();
@@ -658,7 +626,7 @@ namespace ZeroTouch.UI.Views
 
         private double LerpAngle(double current, double target, double t)
         {
-            double diff = target - current;
+            var diff = target - current;
 
             while (diff > 180) diff -= 360;
             while (diff < -180) diff += 360;
@@ -680,7 +648,7 @@ namespace ZeroTouch.UI.Views
 
         private void UpdateTurnInstruction(MainDashboardViewModel vm)
         {
-            int lookAheadSteps = 80;
+            const int lookAheadSteps = 80;
 
             if (_currentStepIndex + lookAheadSteps + 1 >= _interpolatedPath.Count)
             {
