@@ -1,43 +1,80 @@
+using Avalonia.Controls;
 using LibVLCSharp.Shared;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ZeroTouch.UI.Services
 {
     public class MusicPlayerService : IDisposable
     {
-        private readonly LibVLC _libVLC;
-        private readonly MediaPlayer _mediaPlayer;
+        private readonly LibVLC? _libVLC;
+        private readonly MediaPlayer? _mediaPlayer;
+        private bool _isVLCAvailable = false;
 
         private readonly List<string> _playlist = new();
         private int _currentIndex = 0;
         private Media? _currentMedia;
 
         public event Action<long, long>? PositionChanged;
+
         public string CurrentSongName => _playlist.Count > 0
             ? System.IO.Path.GetFileName(_playlist[_currentIndex])
             : string.Empty;
 
         public MusicPlayerService()
         {
-            var libVlcOptions = new[]
-            {
-                "--no-video",
-                "--no-video-title-show",
-                "--no-spu",
-                "--file-caching=1000",
-                "--audio-resampler=soxr",
-                "--avcodec-threads=4",
-                "--aout=wasapi"
-            };
+            if (Design.IsDesignMode) return;
 
-            _libVLC = new LibVLC(libVlcOptions);
-            _mediaPlayer = new MediaPlayer(_libVLC);
-
-            _mediaPlayer.TimeChanged += (sender, e) =>
+            try
             {
-                PositionChanged?.Invoke(_mediaPlayer.Time, _mediaPlayer.Length);
-            };
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Console.WriteLine("[MusicPlayerService] LibVLC initialization skipped: " +
+                                      "macOS Apple Silicon (Arm64) architecture compatibility workaround active.");
+                    return;
+                }
+
+                var libVlcOptions = new[]
+                {
+                    "--no-video",
+                    "--no-video-title-show",
+                    "--no-spu",
+                    "--file-caching=1000",
+                    "--audio-resampler=soxr",
+                    "--avcodec-threads=4",
+                    "--aout=wasapi"
+                };
+                _libVLC = new LibVLC(libVlcOptions);
+                _mediaPlayer = new MediaPlayer(_libVLC);
+                _isVLCAvailable = true;
+
+                _mediaPlayer.TimeChanged += (sender, e) =>
+                {
+                    PositionChanged?.Invoke(_mediaPlayer.Time, _mediaPlayer.Length);
+                };
+
+                Console.WriteLine("[MusicPlayerService] LibVLC initialized successfully.");
+            }
+            catch (VLCException vlcEx)
+            {
+                // Specifically catch VLC-related native issues
+                Console.WriteLine($"[MusicPlayerService] Native VLC Error: {vlcEx.Message}");
+                if (vlcEx.InnerException != null)
+                    Console.WriteLine($"[MusicPlayerService] Inner Detail: {vlcEx.InnerException.Message}");
+
+                _isVLCAvailable = false;
+            }
+            catch (Exception ex)
+            {
+                // Catch-all for other managed exceptions
+                Console.WriteLine($"[MusicPlayerService] General Initialization Failed.");
+                Console.WriteLine($"Type: {ex.GetType().Name}");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                _isVLCAvailable = false;
+            }
         }
 
         public void SetPlaylist(IEnumerable<string> songs)
@@ -50,7 +87,7 @@ namespace ZeroTouch.UI.Services
         public void Play()
         {
             if (_playlist.Count == 0) return;
-            
+
             if (_mediaPlayer.Media != null)
             {
                 _mediaPlayer.Play(); // Resume if paused
