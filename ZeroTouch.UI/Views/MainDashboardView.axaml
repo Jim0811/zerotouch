@@ -1037,6 +1037,7 @@
                                                     Background="#C23030"
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).MusicFocusGroup.Items[0]}"
+                                                    PointerEntered="OnMusicButtonHover"
                                                     Command="{Binding Command}">
 
                                                 <Button.Tag>
@@ -1057,6 +1058,7 @@
                                                     CornerRadius="25"
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).MusicFocusGroup.Items[1]}"
+                                                    PointerEntered="OnMusicButtonHover"
                                                     Command="{Binding Command}">
 
                                                 <Button.Tag>
@@ -1104,6 +1106,7 @@
                                                     Background="#C23030"
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).MusicFocusGroup.Items[2]}"
+                                                    PointerEntered="OnMusicButtonHover"
                                                     Command="{Binding Command}">
 
                                                 <Button.Tag>
@@ -1412,6 +1415,7 @@
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).((vm:MainDashboardViewModel)CurrentView).RouteFocusGroup.Items[0]}"
                                                     PointerPressed="OnRouteBlockClicked"
+                                                    PointerEntered="OnRouteBlockHover"
                                                     Cursor="Hand">
 
                                                 <Grid ColumnDefinitions="Auto, *, Auto">
@@ -1468,6 +1472,7 @@
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).((vm:MainDashboardViewModel)CurrentView).RouteFocusGroup.Items[1]}"
                                                     PointerPressed="OnRouteBlockClicked"
+                                                    PointerEntered="OnRouteBlockHover"
                                                     Cursor="Hand">
 
                                                 <Grid ColumnDefinitions="Auto, *, Auto">
@@ -1523,6 +1528,7 @@
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).((vm:MainDashboardViewModel)CurrentView).RouteFocusGroup.Items[2]}"
                                                     PointerPressed="OnRouteBlockClicked"
+                                                    PointerEntered="OnRouteBlockHover"
                                                     Cursor="Hand">
 
                                                 <Grid ColumnDefinitions="Auto, *, Auto">
@@ -1578,6 +1584,7 @@
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).((vm:MainDashboardViewModel)CurrentView).RouteFocusGroup.Items[3]}"
                                                     PointerPressed="OnRouteBlockClicked"
+                                                    PointerEntered="OnRouteBlockHover"
                                                     Cursor="Hand">
 
                                                 <Grid ColumnDefinitions="Auto, *, Auto">
@@ -1633,6 +1640,7 @@
                                                     x:DataType="nav:IFocusableItem"
                                                     DataContext="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).((vm:MainDashboardViewModel)CurrentView).RouteFocusGroup.Items[4]}"
                                                     PointerPressed="OnRouteBlockClicked"
+                                                    PointerEntered="OnRouteBlockHover"
                                                     Cursor="Hand">
 
                                                 <Grid ColumnDefinitions="Auto, *, Auto">

@@ -18,6 +18,8 @@ namespace ZeroTouch.UI.ViewModels
     {
         private readonly Timer _timer;
         private bool _blinkColon = true;
+        
+        public FocusGroup MusicFocusGroup { get; }
 
         [ObservableProperty] private string currentTime = string.Empty;
         [ObservableProperty] private bool is24HourFormat = true;
@@ -73,6 +75,9 @@ namespace ZeroTouch.UI.ViewModels
 
         [ObservableProperty] private string _previewRouteId = "";
         [ObservableProperty] private string _navigationRouteId = "";
+        
+        private DateTime _lastPauseTime;
+        private readonly TimeSpan _smartPauseThreshold = TimeSpan.FromSeconds(10);
 
         public FocusGroup RouteFocusGroup { get; }
 
@@ -144,6 +149,12 @@ namespace ZeroTouch.UI.ViewModels
                 @"E:\ZeroTouch\ZeroTouch\ZeroTouch.UI\Assets\Music\Shining_Stars.mp3",
                 @"E:\ZeroTouch\ZeroTouch\ZeroTouch.UI\Assets\Music\Nostalgic_Piano.mp3"
             });
+            
+            MusicFocusGroup = new FocusGroup([
+                new FocusItemViewModel(PreviousCommand, "Previous", null, PreviewMusicAction, false),
+                new FocusItemViewModel(PlayPauseCommand, "PlayPause", null, PreviewMusicAction, false),
+                new FocusItemViewModel(NextCommand, "Next", null, PreviewMusicAction, false)
+            ]);
 
             _player.PositionChanged += (pos, dur) =>
             {
@@ -167,6 +178,24 @@ namespace ZeroTouch.UI.ViewModels
                 new FocusItemViewModel(GoRouteCommand, "School", null, PreviewRoute, true),
                 new FocusItemViewModel(GoRouteCommand, "Cinema", null, PreviewRoute, true)
             ]);
+        }
+        
+        private void PreviewMusicAction(object? actionObj)
+        {
+            if (actionObj is string actionName)
+            {
+                string soundFile = "";
+                switch (actionName)
+                {
+                    case "Previous":  soundFile = "prev.mp3"; break; 
+                    case "Next":      soundFile = "next.mp3"; break;
+                }
+
+                if (!string.IsNullOrEmpty(soundFile))
+                {
+                    SoundService.PlaySound(soundFile);
+                }
+            }
         }
 
         private void PreviewRoute(object? routeNameObj)
@@ -414,18 +443,29 @@ namespace ZeroTouch.UI.ViewModels
             {
                 _player.Pause();
                 IsPlaying = false;
+                
+                _lastPauseTime = DateTime.Now;
+                SoundService.PlaySound("pause.mp3");
             }
             else
             {
                 _player.Play();
                 CurrentSong = _player.CurrentSongName;
                 IsPlaying = true;
+                
+                var timePaused = DateTime.Now - _lastPauseTime;
+                
+                if (timePaused > _smartPauseThreshold)
+                {
+                    SoundService.PlaySound("play.mp3");
+                }
             }
         }
 
         [RelayCommand]
         private void Next()
         {
+            SoundService.PlaySound("next.mp3");
             _player.Next();
             CurrentSong = _player.CurrentSongName;
             IsPlaying = true;
@@ -434,6 +474,7 @@ namespace ZeroTouch.UI.ViewModels
         [RelayCommand]
         private void Previous()
         {
+            SoundService.PlaySound("prev.mp3");
             _player.Previous();
             CurrentSong = _player.CurrentSongName;
             IsPlaying = true;

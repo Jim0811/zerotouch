@@ -18,6 +18,7 @@ using System.Linq;
 using ZeroTouch.Services;
 using ZeroTouch.UI.Navigation;
 using ZeroTouch.UI.ViewModels;
+using Avalonia.Input;
 
 namespace ZeroTouch.UI.Views
 {
@@ -233,6 +234,28 @@ namespace ZeroTouch.UI.Views
             if (DataContext is MainDashboardViewModel vm)
             {
                 vm.CurrentPageIndex = 1;
+            }
+        }
+        
+        private void OnRouteBlockHover(object? sender, PointerEventArgs e)
+        {
+            if (sender is Control control && control.DataContext is FocusItemViewModel item)
+            {
+                if (DataContext is MainDashboardViewModel vm)
+                {
+                    vm.RouteFocusGroup.SelectItem(item);
+                }
+            }
+        }
+        
+        private void OnMusicButtonHover(object? sender, PointerEventArgs e)
+        {
+            if (sender is Control control && control.DataContext is FocusItemViewModel item)
+            {
+                if (DataContext is MainDashboardViewModel vm)
+                {
+                    vm.MusicFocusGroup.SelectItem(item);
+                }
             }
         }
 
