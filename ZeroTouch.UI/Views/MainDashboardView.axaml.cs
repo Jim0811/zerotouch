@@ -244,11 +244,11 @@ namespace ZeroTouch.UI.Views
                 
                 switch (routeName.ToLower())
                 {
-                    case "home":   soundFile = "route-home.m4a"; break;
-                    case "work":   soundFile = "route-work.m4a"; break;
-                    case "gym":    soundFile = "route-gym.m4a"; break;
-                    case "school": soundFile = "route-school.m4a"; break;
-                    case "cinema": soundFile = "route-cinema.m4a"; break;
+                    case "home":   soundFile = "route-home.mp3"; break;
+                    case "work":   soundFile = "route-work.mp3"; break;
+                    case "gym":    soundFile = "route-gym.mp3"; break;
+                    case "school": soundFile = "route-school.mp3"; break;
+                    case "cinema": soundFile = "route-cinema.mp3"; break;
                 }
                 
                 if (!string.IsNullOrEmpty(soundFile))

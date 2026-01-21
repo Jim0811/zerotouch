@@ -21,6 +21,96 @@
         <None Update=".env">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+
+        <None Remove="Assets\Announcement\route-start.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\route-start.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\check-route.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\check-route.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\home.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\home.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\maps.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\maps.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\next.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\next.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\pause.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\pause.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\phone.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\phone.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\play.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\play.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\prev.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\prev.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\route-cinema.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\route-cinema.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\route-gym.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\route-gym.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\route-home.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\route-home.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\route-school.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\route-school.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\route-work.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\route-work.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
+
+        <None Remove="Assets\Announcement\settings.mp3" />
+
+        <AvaloniaResource Include="Assets\Announcement\settings.mp3">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
