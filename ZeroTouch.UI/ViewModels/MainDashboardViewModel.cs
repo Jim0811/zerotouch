@@ -10,6 +10,7 @@ using System.Timers;
 using System.Threading.Tasks;
 using ZeroTouch.UI.Navigation;
 using ZeroTouch.UI.Services;
+using ZeroTouch.Services;
 
 namespace ZeroTouch.UI.ViewModels
 {
@@ -83,6 +84,8 @@ namespace ZeroTouch.UI.ViewModels
             
             NavigationRouteId = string.Empty; 
             NavigationRouteId = routeName;
+            
+            SoundService.PlaySound("route-start.m4a");
         }
 
         private readonly IPageTransition _horizontalTransition = new CompositePageTransition
@@ -172,6 +175,27 @@ namespace ZeroTouch.UI.ViewModels
             {
                 PreviewRouteId = routeName;
                 NavigationInstruction = $"Preview: {routeName}"; 
+                
+                PlayRoutePreviewSound(routeName);
+            }
+        }
+        
+        private void PlayRoutePreviewSound(string routeName)
+        {
+            string soundFile = "";
+            
+            switch (routeName.ToLower())
+            {
+                case "home":   soundFile = "route-home.m4a";   break;
+                case "work":   soundFile = "route-work.m4a";   break;
+                case "gym":    soundFile = "route-gym.m4a";    break;
+                case "school": soundFile = "route-school.m4a"; break;
+                case "cinema": soundFile = "route-cinema.m4a"; break;
+            }
+
+            if (!string.IsNullOrEmpty(soundFile))
+            {
+                SoundService.PlaySound(soundFile);
             }
         }
 

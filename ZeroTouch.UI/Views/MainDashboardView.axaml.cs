@@ -15,6 +15,7 @@ using NetTopologySuite.Geometries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ZeroTouch.Services;
 using ZeroTouch.UI.Navigation;
 using ZeroTouch.UI.ViewModels;
 
@@ -239,6 +240,22 @@ namespace ZeroTouch.UI.Views
         {
             if (sender is Button btn && btn.Tag is string routeName)
             {
+                string soundFile = "";
+                
+                switch (routeName.ToLower())
+                {
+                    case "home":   soundFile = "route-home.m4a"; break;
+                    case "work":   soundFile = "route-work.m4a"; break;
+                    case "gym":    soundFile = "route-gym.m4a"; break;
+                    case "school": soundFile = "route-school.m4a"; break;
+                    case "cinema": soundFile = "route-cinema.m4a"; break;
+                }
+                
+                if (!string.IsNullOrEmpty(soundFile))
+                {
+                    SoundService.PlaySound(soundFile);
+                }
+                
                 StartNavigation(routeName);
             }
         }
