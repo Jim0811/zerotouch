@@ -60,6 +60,7 @@ namespace ZeroTouch.UI.ViewModels
         
         [ObservableProperty] private bool _isMusicFocused;
         private System.Threading.CancellationTokenSource? _musicFocusCts;
+        public bool IsMapFocused => !IsMusicFocused;
 
         // Navigation Info, e.g., "Turn Right", "Go Straight"
         [ObservableProperty] private string _navigationInstruction = "Follow Route";
